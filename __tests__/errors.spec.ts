@@ -1,16 +1,16 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common'
 
-import { InjectPinoLogger, PinoLogger } from '../src';
+import { InjectPinoLogger, PinoLogger } from '../src'
 
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('error logging', () => {
   for (const PlatformAdapter of platforms) {
     describe(PlatformAdapter.name, () => {
       describe('passing error directly', () => {
         it(InjectPinoLogger.name, async () => {
-          const ctx = Math.random().toString();
+          const ctx = Math.random().toString()
 
           @Controller('/')
           class TestController {
@@ -19,8 +19,8 @@ describe('error logging', () => {
             ) {}
             @Get()
             get() {
-              this.logger.info(new Error('direct error passing'));
-              return {};
+              this.logger.info(new Error('direct error passing'))
+              return {}
             }
           }
 
@@ -28,25 +28,25 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot()
-            .run();
+            .run()
           expect(
             logs.some((v) => v.req && v.context === ctx && v.err),
-          ).toBeTruthy();
-        });
+          ).toBeTruthy()
+        })
 
         it(PinoLogger.name, async () => {
-          const ctx = Math.random().toString();
+          const ctx = Math.random().toString()
 
           @Controller('/')
           class TestController {
             constructor(private readonly logger: PinoLogger) {
-              this.logger.setContext(ctx);
+              this.logger.setContext(ctx)
             }
 
             @Get()
             get() {
-              this.logger.info(new Error('direct error passing'));
-              return {};
+              this.logger.info(new Error('direct error passing'))
+              return {}
             }
           }
 
@@ -54,22 +54,22 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot()
-            .run();
+            .run()
           expect(
             logs.some((v) => v.req && v.context === ctx && v.err),
-          ).toBeTruthy();
-        });
+          ).toBeTruthy()
+        })
 
         it(Logger.name, async () => {
-          const ctx = Math.random().toString();
+          const ctx = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(ctx);
+            private readonly logger = new Logger(ctx)
             @Get()
             get() {
-              this.logger.log(new Error('direct error passing'));
-              return {};
+              this.logger.log(new Error('direct error passing'))
+              return {}
             }
           }
 
@@ -77,16 +77,16 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot()
-            .run();
+            .run()
           expect(
             logs.some((v) => v.req && v.context === ctx && v.err),
-          ).toBeTruthy();
-        });
-      });
+          ).toBeTruthy()
+        })
+      })
 
       describe('passing error with `err` field', () => {
         it(InjectPinoLogger.name, async () => {
-          const ctx = Math.random().toString();
+          const ctx = Math.random().toString()
 
           @Controller('/')
           class TestController {
@@ -98,8 +98,8 @@ describe('error logging', () => {
               this.logger.info(
                 { err: new Error('pino-style error passing'), foo: 'bar' },
                 'baz',
-              );
-              return {};
+              )
+              return {}
             }
           }
 
@@ -107,21 +107,21 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot()
-            .run();
+            .run()
           expect(
             logs.some(
               (v) => v.req && v.context === ctx && v.err && v.foo === 'bar',
             ),
-          ).toBeTruthy();
-        });
+          ).toBeTruthy()
+        })
 
         it(PinoLogger.name, async () => {
-          const ctx = Math.random().toString();
+          const ctx = Math.random().toString()
 
           @Controller('/')
           class TestController {
             constructor(private readonly logger: PinoLogger) {
-              this.logger.setContext(ctx);
+              this.logger.setContext(ctx)
             }
 
             @Get()
@@ -129,8 +129,8 @@ describe('error logging', () => {
               this.logger.info(
                 { err: new Error('pino-style error passing'), foo: 'bar' },
                 'baz',
-              );
-              return {};
+              )
+              return {}
             }
           }
 
@@ -138,27 +138,27 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot()
-            .run();
+            .run()
           expect(
             logs.some(
               (v) => v.req && v.context === ctx && v.err && v.foo === 'bar',
             ),
-          ).toBeTruthy();
-        });
+          ).toBeTruthy()
+        })
 
         it(Logger.name, async () => {
-          const ctx = Math.random().toString();
+          const ctx = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(ctx);
+            private readonly logger = new Logger(ctx)
             @Get()
             get() {
               this.logger.log(
                 { err: new Error('pino-style error passing'), foo: 'bar' },
                 'baz',
-              );
-              return {};
+              )
+              return {}
             }
           }
 
@@ -166,30 +166,30 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot()
-            .run();
+            .run()
           expect(
             logs.some(
               (v) => v.req && v.context === ctx && v.err && v.foo === 'bar',
             ),
-          ).toBeTruthy();
-        });
-      });
+          ).toBeTruthy()
+        })
+      })
 
       describe('setting custom attribute keys', () => {
         it('setting the `err` custom attribute key', async () => {
-          const ctx = Math.random().toString();
-          const message = 'custom `err` attribute key';
+          const ctx = Math.random().toString()
+          const message = 'custom `err` attribute key'
 
           @Controller('/')
           class TestController {
             constructor(private readonly logger: PinoLogger) {
-              this.logger.setContext(ctx);
+              this.logger.setContext(ctx)
             }
 
             @Get()
             get() {
-              this.logger.info(new Error(message), 'baz');
-              return {};
+              this.logger.info(new Error(message), 'baz')
+              return {}
             }
           }
 
@@ -197,7 +197,7 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot({ pinoHttp: { customAttributeKeys: { err: 'error' } } })
-            .run();
+            .run()
           expect(
             logs.some(
               (v) =>
@@ -207,23 +207,23 @@ describe('error logging', () => {
                 v.error &&
                 (v.error as { message: string }).message === message,
             ),
-          ).toBeTruthy();
-        });
+          ).toBeTruthy()
+        })
 
         it('setting the `req` custom attribute key', async () => {
-          const ctx = Math.random().toString();
-          const message = 'custom `req` attribute key';
+          const ctx = Math.random().toString()
+          const message = 'custom `req` attribute key'
 
           @Controller('/')
           class TestController {
             constructor(private readonly logger: PinoLogger) {
-              this.logger.setContext(ctx);
+              this.logger.setContext(ctx)
             }
 
             @Get()
             get() {
-              this.logger.info(new Error(message), 'baz');
-              return {};
+              this.logger.info(new Error(message), 'baz')
+              return {}
             }
           }
 
@@ -231,7 +231,7 @@ describe('error logging', () => {
             controllers: [TestController],
           })
             .forRoot({ pinoHttp: { customAttributeKeys: { req: 'request' } } })
-            .run();
+            .run()
           expect(
             logs.some(
               (v) =>
@@ -241,19 +241,19 @@ describe('error logging', () => {
                 v.err &&
                 v.err.message === message,
             ),
-          ).toBeTruthy();
-        });
-      });
+          ).toBeTruthy()
+        })
+      })
 
       describe('keeps stack of thrown error', () => {
         it('built-in error handler logs with correct stack', async () => {
-          const msg = Math.random().toString();
+          const msg = Math.random().toString()
 
           @Controller('/')
           class TestController {
             @Get()
             get() {
-              throw new Error(msg);
+              throw new Error(msg)
             }
           }
 
@@ -262,7 +262,7 @@ describe('error logging', () => {
           })
             .forRoot()
             .expectError(500)
-            .run();
+            .run()
 
           expect(
             logs.some(
@@ -276,9 +276,9 @@ describe('error logging', () => {
                   `${TestController.name}.${TestController.prototype.get.name}`,
                 ),
             ),
-          ).toBeTruthy();
-        });
-      });
-    });
+          ).toBeTruthy()
+        })
+      })
+    })
   }
-});
+})

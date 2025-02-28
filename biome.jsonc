@@ -71,6 +71,9 @@
       "attributePosition": "auto",
       "bracketSpacing": true
     },
-    "globals": ["exports"]
+    "globals": ["exports"],
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
   }
 }
