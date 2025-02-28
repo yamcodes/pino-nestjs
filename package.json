@@ -1,7 +1,7 @@
 {
   "name": "pino-nestjs",
   "version": "0.0.0",
-  "description": "Pino logger for NestJS",
+  "description": "✨ Pino logger for NestJS 8+ with request context in every log ✨",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
