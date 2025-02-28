@@ -139,35 +139,39 @@ export class PinoLogger implements PinoMethods {
   protected call(method: pino.Level, ...args: Parameters<LoggerFn>) {
     // NestJS logging style is message first, then context
     // When called from Logger.ts, message will be first arg, and context object second
-    
+
     // We need to reformat this according to Pino's expectations
-    let newArgs = [...args];
-    
+    let newArgs = [...args]
+
     // If first arg is a string message and second arg is an object (likely context)
-    if (typeof args[0] === 'string' && typeof args[1] === 'object' && args.length >= 2) {
+    if (
+      typeof args[0] === 'string' &&
+      typeof args[1] === 'object' &&
+      args.length >= 2
+    ) {
       // Pino expects: obj (with context), msg, ...args
       // So we need to merge context (args[1]) with our context if set
-      const contextObj = args[1] as Record<string, any>;
-      
+      const contextObj = args[1] as Record<string, any>
+
       if (this.context) {
         // Add our context to the context object
-        contextObj[this.contextName] = this.context;
+        contextObj[this.contextName] = this.context
       }
-      
+
       // Pino format: contextObj, message, ...rest
-      newArgs = [contextObj, args[0], ...args.slice(2)];
+      newArgs = [contextObj, args[0], ...args.slice(2)]
     }
     // Handle case where first arg is an Error or other object
     else if (isFirstArgObject(args)) {
       // Keep object as first arg but add context if set
       if (this.context) {
-        const firstArg = args[0];
+        const firstArg = args[0]
         if (firstArg instanceof Error) {
           // For errors, wrap with context and error
           newArgs = [
             Object.assign(
               { [this.contextName]: this.context },
-              { [this.errorKey]: firstArg }
+              { [this.errorKey]: firstArg },
             ),
             ...args.slice(1),
           ]
@@ -179,16 +183,16 @@ export class PinoLogger implements PinoMethods {
           ]
         }
       }
-    } 
+    }
     // Simple message without context object
     else if (this.context) {
       // For simple messages without context object, add context as first param
-      newArgs = [{ [this.contextName]: this.context }, ...args];
+      newArgs = [{ [this.contextName]: this.context }, ...args]
     }
-    
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore args are union of tuple types
-    this.logger[method](...newArgs);
+    this.logger[method](...newArgs)
   }
 }
 

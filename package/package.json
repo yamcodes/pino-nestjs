@@ -4,18 +4,6 @@
   "description": "Drop-in Pino logger for NestJS with request context in every log",
   "main": "index.js",
   "types": "index.d.ts",
-  "scripts": {
-    "test": "jest --verbose -i --detectOpenHandles --forceExit",
-    "lint": "tsc --noemit && eslint \"{src,__tests__}/**/*.ts\" --fix",
-    "build": "turbo run build:root",
-    "build:root": "rimraf dist && tsc -p tsconfig.build.json",
-    "release": "pnpm run build && changeset publish",
-    "prepack": "pnpm run build",
-    "fix": "biome check --write .",
-    "check": "biome check",
-    "check:errors": "biome check --diagnostic-level=error",
-    "clean": "rimraf dist node_modules"
-  },
   "files": ["dist"],
   "engineStrict": true,
   "engines": {
@@ -67,8 +55,15 @@
     "pino-http": "^6.4.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0",
     "rxjs": "^7.1.0"
   },
-  "packageManager": "pnpm@10.5.2",
-  "pnpm": {
-    "onlyBuiltDependencies": ["@nestjs/core"]
+  "scripts": {
+    "test": "jest --verbose -i --detectOpenHandles --forceExit",
+    "lint": "tsc --noemit && eslint \"{src,__tests__}/**/*.ts\" --fix",
+    "build": "turbo run build:root",
+    "build:root": "rimraf dist && tsc -p tsconfig.build.json",
+    "release": "pnpm run build && changeset publish",
+    "fix": "biome check --write .",
+    "check": "biome check",
+    "check:errors": "biome check --diagnostic-level=error",
+    "clean": "rimraf dist node_modules"
   }
 }

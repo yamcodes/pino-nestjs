@@ -53,15 +53,15 @@ export class Logger implements LoggerService {
 
     if (typeof message === 'object') {
       if (message instanceof Error) {
-        objArg.err = message;
+        objArg.err = message
         // NestJS style: Error message first, then context and other params
-        this.logger[level](message.message || 'Error', objArg, ...params);
+        this.logger[level](message.message || 'Error', objArg, ...params)
       } else {
         // For non-Error objects, follow NestJS pattern - message first, then context
         // Store original message object properties in a new variable
-        const msgObj = { ...message };
+        const msgObj = { ...message }
         // Pass message object first, then context object with proper context
-        this.logger[level](msgObj, objArg, ...params);
+        this.logger[level](msgObj, objArg, ...params)
       }
     } else if (this.isWrongExceptionsHandlerContract(level, message, params)) {
       objArg.err = new Error(message)
@@ -69,7 +69,7 @@ export class Logger implements LoggerService {
       this.logger[level](objArg)
     } else {
       // NestJS style: message first, then context
-      this.logger[level](message, objArg, ...params);
+      this.logger[level](message, objArg, ...params)
     }
   }
 
