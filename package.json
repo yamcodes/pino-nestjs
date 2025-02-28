@@ -1,6 +1,6 @@
 {
   "name": "pino-nestjs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Drop-in Pino logger for NestJS with request context in every log",
   "main": "index.js",
   "types": "index.d.ts",
@@ -16,7 +16,9 @@
     "check:errors": "biome check --diagnostic-level=error",
     "clean": "rimraf dist node_modules"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engineStrict": true,
   "engines": {
     "node": ">= 14"
@@ -25,7 +27,13 @@
     "type": "git",
     "url": "git+https://github.com/yamcodes/pino-nestjs.git"
   },
-  "keywords": ["pino", "nestjs", "nest.js", "nest", "logger"],
+  "keywords": [
+    "pino",
+    "nestjs",
+    "nest.js",
+    "nest",
+    "logger"
+  ],
   "author": "yamcodes <yam@yam.codes> (http://github.com/yamcodes)",
   "license": "MIT",
   "bugs": {
@@ -69,6 +77,8 @@
   },
   "packageManager": "pnpm@10.5.2",
   "pnpm": {
-    "onlyBuiltDependencies": ["@nestjs/core"]
+    "onlyBuiltDependencies": [
+      "@nestjs/core"
+    ]
   }
 }
