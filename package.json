@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jest --verbose -i --detectOpenHandles --forceExit",
     "lint": "tsc --noemit && eslint \"{src,__tests__}/**/*.ts\" --fix",
-    "build": "rimraf dist && tsc -p tsconfig.build.json",		
+    "build": "turbo run build:root",
+    "build:root": "rimraf dist && tsc -p tsconfig.build.json",
     "release": "pnpm run build && changeset publish",
     "prepack": "pnpm run build"
   },
@@ -72,6 +73,7 @@
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
+    "turbo": "^2.4.4",
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
@@ -79,5 +81,6 @@
     "pino": "^7.5.0 || ^8.0.0 || ^9.0.0",
     "pino-http": "^6.4.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0",
     "rxjs": "^7.1.0"
-  }
+  },
+  "packageManager": "pnpm@10.5.2"
 }
