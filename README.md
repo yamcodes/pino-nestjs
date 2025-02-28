@@ -6,10 +6,10 @@
 </p>
 <p align="center">
   <a href="https://github.com/yamcodes/pino-nestjs/actions"><img alt="Tests Status" src="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml/badge.svg?event=push&branch=main"></a>
-  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Total Downloads" src="https://badgen.net/npm/dt/pino-nestjs/total?icon=npm&color=blue"></a>
-  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Bundle Size" src="https://badgen.net/bundlephobia/min/pino-nestjs?icon=npm&color=blue&label=bundle%20size"></a>
-  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Dependency Count" src="https://badgen.net/bundlephobia/dependency-count/pino-nestjs?icon=npm&color=blue&label=dependencies"></a>
-  <a href="https://getpino.io/"><img alt="Powered By pino" src="https://badgen.net/static/powered by/pino"></a>
+  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Total Downloads" src="https://badgen.net/npm/dt/pino-nestjs/total?icon=npm&color=859947"></a>
+  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Bundle Size" src="https://badgen.net/bundlephobia/min/pino-nestjs?icon=npm&color=859947&label=bundle%20size"></a>
+  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Dependency Count" src="https://badgen.net/bundlephobia/dependency-count/pino-nestjs?icon=npm&color=859947&label=dependencies"></a>
+  <a href="https://getpino.io/"><img alt="Powered By pino" src="https://badgen.net/static/powered%20by/pino?color=859947"></a>
 </p>
 
 
