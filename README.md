@@ -1,61 +1,50 @@
-<p align="center">
-  <img alt="Bombed Vovchansk, Ukraine" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Vovchansk_%282024-06-02%29_1513.jpg/640px-Vovchansk_%282024-06-02%29_1513.jpg"/>
-  <br />
-  <small>"Vovchansk (2024-06-02) 1513" by National Police of Ukraine (Liut Brigade) is licensed under CC BY 4.0.</small>
-</p>
-<p align="center">
-  This is Vovchansk, Ukraine, the city where the father of this library’s author was born. This is how it looks now, after the Russian invasion. If you find this library useful and would like to thank the author, please consider donating any amount via one of the following links:
-  <br/>
-  ・<a href="https://war.ukraine.ua/donate/">Armed Forces of Ukraine</a>・<a href="https://savelife.in.ua/en/">"The Come Back Alive" foundation</a>・
-  <br/>
-  Thanks for your support! 🇺🇦
-</p>
-
-<h1 align="center">NestJS-Pino</h1>
+<h1 align="center">pino-nestjs</h1>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/nestjs-pino">
-    <img alt="npm" src="https://img.shields.io/npm/v/nestjs-pino" />
-  </a>
-  <a href="https://www.npmjs.com/package/nestjs-pino">
-    <img alt="npm" src="https://img.shields.io/npm/dm/nestjs-pino" />
-  </a>
-  <a href="https://github.com/iamolegga/nestjs-pino/actions">
-    <img alt="GitHub branch checks state" src="https://badgen.net/github/checks/iamolegga/nestjs-pino">
-  </a>
-  <a href="https://codeclimate.com/github/iamolegga/nestjs-pino/test_coverage">
-    <img src="https://api.codeclimate.com/v1/badges/2821150bb93506cb66fc/test_coverage" />
-  </a>
-  <a href="https://snyk.io/test/github/iamolegga/nestjs-pino">
-    <img alt="Known Vulnerabilities" src="https://snyk.io/test/github/iamolegga/nestjs-pino/badge.svg" />
-  </a>
-  <a href="https://libraries.io/npm/nestjs-pino">
-    <img alt="Libraries.io" src="https://img.shields.io/librariesio/release/npm/nestjs-pino">
-  </a>
-  <img alt="Dependabot" src="https://badgen.net/github/dependabot/iamolegga/nestjs-pino">
-  <img alt="Supported platforms: Express & Fastify" src="https://img.shields.io/badge/platforms-Express%20%26%20Fastify-green" />
+  <a href="https://github.com/yamcodes/pino-nestjs/actions"><img alt="GitHub branch checks state" src="https://badgen.net/github/checks/yamcodes/pino-nestjs"></a>
+  <a href="https://snyk.io/test/github/yamcodes/pino-nestjs"><img alt="Known Vulnerabilities" src="https://snyk.io/test/github/yamcodes/pino-nestjs/badge.svg" /></a>
+  <a href="https://libraries.io/npm/pino-nestjs"><img alt="Libraries.io" src="https://img.shields.io/librariesio/release/npm/pino-nestjs"></a>
+  <img alt="Dependabot" src="https://badgen.net/github/dependabot/yamcodes/pino-nestjs">
+  <img alt="Supports Express" src="https://img.shields.io/badge/supports-Express-green" />
+  <img alt="Supported Fastify" src="https://img.shields.io/badge/supports-Fastify-green" />
 </p>
 
-<p align="center">✨✨✨ Platform agnostic logger for NestJS based on Pino with <b>REQUEST CONTEXT IN EVERY LOG</b> ✨✨✨</p>
+<p align="center">✨ Pino logger for NestJS 8+ with request context in every log ✨</p>
 
----
+## Table of contents
 
-<p align="center"><b>This is documentation for v2+ which works with NestJS 8+.<br/>Please see documentation for the previous major version which works with NestJS < 8 <a href="https://github.com/iamolegga/nestjs-pino/tree/v1.4.0#readme">here</a>.</b></p>
+- [Installation](#installation)
+- [Usage](#usage)
+- [Comparison with other loggers](#comparison-with-other-loggers)
+- [Configuration](#configuration)
+  - [Zero configuration](#zero-configuration)
+  - [Configuration parameters](#configuration-parameters)
+  - [Synchronous configuration](#synchronous-configuration)
+  - [Asynchronous configuration](#asynchronous-configuration)
+  - [Asynchronous logging](#asynchronous-logging)
+- [Testing](#testing-a-class-that-uses-injectpinologger)
+- [Extending logger classes](#logger-and-pinologger-class-extension)
+- [Notes on logger injection](#notes-on-logger-injection-in-constructor)
+- [Additional features](#assign-extra-fields-for-future-calls)
+  - [Assign extra fields](#assign-extra-fields-for-future-calls)
+  - [Change Pino parameters at runtime](#change-pino-params-at-runtime)
+  - [Expose stack trace](#expose-stack-trace-and-error-class-in-err-property)
+- [Frequently asked questions](#frequently-asked-questions)
 
----
-
-## Install
+## Installation
 
 ```sh
-npm i nestjs-pino pino-http
+npm i pino-nestjs pino-http
 ```
 
-## Example
+## Usage
 
-Firstly, import module with `LoggerModule.forRoot(...)` or `LoggerModule.forRootAsync(...)` only once in root module (check out module configuration docs [below](#configuration)):
+### Import the module
+
+Import `LoggerModule` in your root module:
 
 ```ts
-import { LoggerModule } from 'nestjs-pino';
+import { LoggerModule } from 'pino-nestjs';
 
 @Module({
   imports: [LoggerModule.forRoot()],
@@ -63,16 +52,18 @@ import { LoggerModule } from 'nestjs-pino';
 class AppModule {}
 ```
 
-Secondly, set up app logger:
+### Set up app logger
 
 ```ts
-import { Logger } from 'nestjs-pino';
+import { Logger } from 'pino-nestjs';
 
 const app = await NestFactory.create(AppModule, { bufferLogs: true });
 app.useLogger(app.get(Logger));
 ```
 
-Now you can use one of two loggers:
+### Use one of two logger options
+
+#### Option 1: NestJS standard logger (recommended)
 
 ```ts
 // NestJS standard built-in logger.
@@ -81,10 +72,10 @@ import { Logger } from '@nestjs/common';
 
 export class MyService {
   private readonly logger = new Logger(MyService.name);
+  
   foo() {
     // All logger methods have args format the same as pino, but pino methods
-    // `trace` and `info` are mapped to `verbose` and `log` to satisfy
-    // `LoggerService` interface of NestJS:
+    // `trace` and `info` are mapped to `verbose` and `log` respectively
     this.logger.verbose({ foo: 'bar' }, 'baz %s', 'qux');
     this.logger.debug('foo %s %o', 'bar', { baz: 'qux' });
     this.logger.log('foo');
@@ -92,21 +83,21 @@ export class MyService {
 }
 ```
 
-Usage of the standard logger is recommended and idiomatic for NestJS. But there is one more option to use:
+#### Option 2: Direct Pino Logger
 
 ```ts
-import { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
+import { PinoLogger, InjectPinoLogger } from 'pino-nestjs';
 
 export class MyService {
   constructor(
     private readonly logger: PinoLogger
   ) {
-    // Optionally you can set context for logger in constructor or ...
+    // Optionally set context in constructor
     this.logger.setContext(MyService.name);
   }
 
+  // Alternative: use decorator to set context
   constructor(
-    // ... set context via special decorator
     @InjectPinoLogger(MyService.name)
     private readonly logger: PinoLogger
   ) {}
@@ -120,10 +111,10 @@ export class MyService {
 }
 ```
 
-Output:
+### Log output example
 
 ```json
-// Logs by app itself
+// App logs
 {"level":30,"time":1629823318326,"pid":14727,"hostname":"my-host","context":"NestFactory","msg":"Starting Nest application..."}
 {"level":30,"time":1629823318326,"pid":14727,"hostname":"my-host","context":"InstanceLoader","msg":"LoggerModule dependencies initialized"}
 {"level":30,"time":1629823318327,"pid":14727,"hostname":"my-host","context":"InstanceLoader","msg":"AppModule dependencies initialized"}
@@ -131,53 +122,47 @@ Output:
 {"level":30,"time":1629823318327,"pid":14727,"hostname":"my-host","context":"RouterExplorer","msg":"Mapped {/, GET} route"}
 {"level":30,"time":1629823318327,"pid":14727,"hostname":"my-host","context":"NestApplication","msg":"Nest application successfully started"}
 
-// Logs by injected Logger and PinoLogger in Services/Controllers. Every log
-// has it's request data and unique `req.id` (by default id is unique per
-// process, but you can set function to generate it from request context and
-// for example pass here incoming `X-Request-ID` header or generate UUID)
+// Service logs with request context and req.id
 {"level":10,"time":1629823792023,"pid":15067,"hostname":"my-host","req":{"id":1,"method":"GET","url":"/","query":{},"params":{"0":""},"headers":{"host":"localhost:3000","user-agent":"curl/7.64.1","accept":"*/*"},"remoteAddress":"::1","remotePort":63822},"context":"MyService","foo":"bar","msg":"baz qux"}
 {"level":20,"time":1629823792023,"pid":15067,"hostname":"my-host","req":{"id":1,"method":"GET","url":"/","query":{},"params":{"0":""},"headers":{"host":"localhost:3000","user-agent":"curl/7.64.1","accept":"*/*"},"remoteAddress":"::1","remotePort":63822},"context":"MyService","msg":"foo bar {\"baz\":\"qux\"}"}
 {"level":30,"time":1629823792023,"pid":15067,"hostname":"my-host","req":{"id":1,"method":"GET","url":"/","query":{},"params":{"0":""},"headers":{"host":"localhost:3000","user-agent":"curl/7.64.1","accept":"*/*"},"remoteAddress":"::1","remotePort":63822},"context":"MyService","msg":"foo"}
 
-// Automatic logs of every request/response
+// Automatic request/response logs
 {"level":30,"time":1629823792029,"pid":15067,"hostname":"my-host","req":{"id":1,"method":"GET","url":"/","query":{},"params":{"0":""},"headers":{"host":"localhost:3000","user-agent":"curl/7.64.1","accept":"*/*"},"remoteAddress":"::1","remotePort":63822},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"12","etag":"W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\""}},"responseTime":7,"msg":"request completed"}
 ```
 
-## Comparison with others
+## Comparison with other loggers
 
-There are other Nestjs loggers. Key purposes of this module are:
+Key features of this module:
 
-- to be idiomatic NestJS logger
-- to log in JSON format (thanks to [pino](https://getpino.io/#/) - [super fast logger](https://github.com/pinojs/pino/blob/master/docs/benchmarks.md)) [why](https://www.loggly.com/use-cases/json-logging-best-practices/) [you](https://hackernoon.com/log-everything-as-json-hmq32ax) [should](https://blog.treasuredata.com/blog/2012/04/26/log-everything-as-json/) [use](https://stackify.com/what-is-structured-logging-and-why-developers-need-it/) [JSON](https://softwareengineering.stackexchange.com/a/170528)
-- to log every request/response automatically (thanks to [pino-http](https://github.com/pinojs/pino-http#pino-http))
-- to bind request data to the logs automatically from any service on any application layer without passing request context (thanks to [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage))
-- to have another alternative logger with same API as `pino` instance (`PinoLogger`) for experienced `pino` users to make more comfortable usage.
+- Idiomatic NestJS logger
+- JSON format logging (via [pino](https://getpino.io/) - [super fast logger](https://github.com/pinojs/pino/blob/master/docs/benchmarks.md))
+- Automatic request/response logging (via [pino-http](https://github.com/pinojs/pino-http))
+- Request data binding to logs from any service without passing context (via [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage))
+- Alternative `PinoLogger` with the same API as `pino` for experienced pino users
 
-| Logger             | Nest App logger | Logger service | Auto-bind request data to logs |
-| ------------------ | :-------------: | :------------: | :---------------------------: |
-| nest-winston       |        +        |       +        |               -               |
-| nestjs-pino-logger |        +        |       +        |               -               |
-| **nestjs-pino**    |        +        |       +        |               +               |
+| Logger | Nest App Logger | Logger Service | Auto-bind Request Data |
+|--------|:--------------:|:--------------:|:----------------------:|
+| [nest-winston](https://github.com/gremo/nest-winston) | ✅ | ✅ | ❌ |
+| [pino-nestjs-logger](https://github.com/jtmthf/pino-nestjs-logger) | ✅ | ✅ | ❌ |
+| [nestjs-pino](https://github.com/iamolegga/nestjs-pino) | ✅ | ✅ | ✅ |
+| [**pino-nestjs**](https://github.com/yamcodes/pino-nestjs) | ✅ | ✅ | ✅ |
 
 ## Configuration
 
 ### Zero configuration
 
-Just import `LoggerModule` to your module:
-
 ```ts
-import { LoggerModule } from 'nestjs-pino';
+import { LoggerModule } from 'pino-nestjs';
 
 @Module({
   imports: [LoggerModule.forRoot()],
-  ...
+  // ...
 })
 class MyModule {}
 ```
 
-### Configuration params
-
-The following interface is using for the configuration:
+### Configuration parameters
 
 ```ts
 interface Params {
@@ -191,42 +176,28 @@ interface Params {
     | [pinoHttp.Options, DestinationStream];
 
   /**
-   * Optional parameter for routing. It should implement interface of
-   * parameters of NestJS built-in `MiddlewareConfigProxy['forRoutes']`.
+   * Optional parameter for routing. Implements interface of
+   * NestJS built-in `MiddlewareConfigProxy['forRoutes']`.
    * @see https://docs.nestjs.com/middleware#applying-middleware
-   * It can be used for both disabling automatic req/res logs (see above) and
-   * removing request context from following logs. It works for all requests by
-   * default. If you only need to turn off the automatic request/response
-   * logging for some specific (or all) routes but keep request context for app
-   * logs use `pinoHttp.autoLogging` field.
    */
   forRoutes?: Parameters<MiddlewareConfigProxy['forRoutes']>;
 
   /**
-   * Optional parameter for routing. It should implement interface of
-   * parameters of NestJS built-in `MiddlewareConfigProxy['exclude']`.
+   * Optional parameter for routing. Implements interface of
+   * NestJS built-in `MiddlewareConfigProxy['exclude']`.
    * @see https://docs.nestjs.com/middleware#applying-middleware
-   * It can be used for both disabling automatic req/res logs (see above) and
-   * removing request context from following logs. It works for all requests by
-   * default. If you only need to turn off the automatic request/response
-   * logging for some specific (or all) routes but keep request context for app
-   * logs use `pinoHttp.autoLogging` field.
    */
   exclude?: Parameters<MiddlewareConfigProxy['exclude']>;
 
   /**
-   * Optional parameter to skip pino configuration in case you are using
-   * FastifyAdapter, and already configure logger in adapter's config. The Pros
-   * and cons of this approach are described in the FAQ section of the
-   * documentation:
-   * @see https://github.com/iamolegga/nestjs-pino#faq.
+   * Optional parameter to skip pino configuration when using
+   * FastifyAdapter with pre-configured logger.
+   * @see https://github.com/yamcodes/pino-nestjs#faq
    */
   useExisting?: true;
 
   /**
-   * Optional parameter to change property name `context` in resulted logs,
-   * so logs will be like:
-   * {"level":30, ... "RENAME_CONTEXT_VALUE_HERE":"AppController" }
+   * Optional parameter to change property name `context` in logs
    */
   renameContext?: string;
 }
@@ -234,29 +205,23 @@ interface Params {
 
 ### Synchronous configuration
 
-Use `LoggerModule.forRoot` method with argument of [Params interface](#configuration-params):
-
 ```ts
-import { LoggerModule } from 'nestjs-pino';
+import { LoggerModule } from 'pino-nestjs';
 
 @Module({
   imports: [
     LoggerModule.forRoot({
       pinoHttp: [
         {
-          name: 'add some name to every JSON line',
+          name: 'my-app-name',
           level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
-          // install 'pino-pretty' package in order to use the following option
+          // Install 'pino-pretty' package to use this option
           transport: process.env.NODE_ENV !== 'production'
             ? { target: 'pino-pretty' }
             : undefined,
-
-
-          // and all the other fields of:
-          // - https://github.com/pinojs/pino-http#api
-          // - https://github.com/pinojs/pino/blob/HEAD/docs/api.md#options-object
-
-
+          // Other pino-http options:
+          // https://github.com/pinojs/pino-http#api
+          // https://github.com/pinojs/pino/blob/HEAD/docs/api.md#options-object
         },
         someWritableStream
       ],
@@ -264,21 +229,15 @@ import { LoggerModule } from 'nestjs-pino';
       exclude: [{ method: RequestMethod.ALL, path: 'check' }]
     })
   ],
-  ...
+  // ...
 })
 class MyModule {}
 ```
 
 ### Asynchronous configuration
 
-With `LoggerModule.forRootAsync` you can, for example, import your `ConfigModule` and inject `ConfigService` to use it in `useFactory` method.
-
-`useFactory` should return object with [Params interface](#configuration-params) or undefined
-
-Here's an example:
-
 ```ts
-import { LoggerModule } from 'nestjs-pino';
+import { LoggerModule } from 'pino-nestjs';
 
 @Injectable()
 class ConfigService {
@@ -304,22 +263,20 @@ class ConfigModule {}
       }
     })
   ],
-  ...
+  // ...
 })
 class TestModule {}
 ```
 
 ### Asynchronous logging
 
-> In essence, asynchronous logging enables even faster performance by `pino`.
+> Asynchronous logging enables even faster performance by pino but risks losing the most recently buffered logs in case of system failure.
 
-Please, read [pino asynchronous mode docs](https://github.com/pinojs/pino/blob/master/docs/asynchronous.md) first. There is a possibility of the most recently buffered log messages being lost in case of a system failure, e.g. a power cut.
-
-If you know what you're doing, you can enable it like so:
+Read [pino asynchronous mode docs](https://github.com/pinojs/pino/blob/master/docs/asynchronous.md) first.
 
 ```ts
 import pino from 'pino';
-import { LoggerModule } from 'nestjs-pino';
+import { LoggerModule } from 'pino-nestjs';
 
 @Module({
   imports: [
@@ -333,7 +290,7 @@ import { LoggerModule } from 'nestjs-pino';
       },
     }),
   ],
-  ...
+  // ...
 })
 class MyModule {}
 ```
@@ -342,28 +299,27 @@ See [pino.destination](https://github.com/pinojs/pino/blob/master/docs/api.md#pi
 
 ## Testing a class that uses @InjectPinoLogger
 
-This package exposes a `getLoggerToken()` function that returns a prepared injection token based on the provided context.
-Using this token, you can provide a mock implementation of the logger using any of the standard custom provider techniques, including `useClass`, `useValue` and `useFactory`.
+The package exposes a `getLoggerToken()` function that returns an injection token based on the provided context:
 
 ```ts
-  const module: TestingModule = await Test.createTestingModule({
-    providers: [
-      MyService,
-      {
-        provide: getLoggerToken(MyService.name),
-        useValue: mockLogger,
-      },
-    ],
-  }).compile();
+const module: TestingModule = await Test.createTestingModule({
+  providers: [
+    MyService,
+    {
+      provide: getLoggerToken(MyService.name),
+      useValue: mockLogger,
+    },
+  ],
+}).compile();
 ```
 
-## Logger/PinoLogger class extension
+## Logger and PinoLogger class extension
 
-`Logger` and `PinoLogger` classes can be extended.
+Both classes can be extended:
 
 ```ts
 // logger.service.ts
-import { Logger, PinoLogger, Params, PARAMS_PROVIDER_TOKEN } from 'nestjs-pino';
+import { Logger, PinoLogger, Params, PARAMS_PROVIDER_TOKEN } from 'pino-nestjs';
 
 @Injectable()
 class LoggerService extends Logger {
@@ -371,25 +327,25 @@ class LoggerService extends Logger {
     logger: PinoLogger,
     @Inject(PARAMS_PROVIDER_TOKEN) params: Params
   ) {
-    ...
+    super();
+    // ...
   }
-  // extended method
+  // Extended method
   myMethod(): any {}
 }
 
-import { PinoLogger, Params, PARAMS_PROVIDER_TOKEN } from 'nestjs-pino';
-
+// Alternative: Extend PinoLogger
 @Injectable()
 class LoggerService extends PinoLogger {
   constructor(
     @Inject(PARAMS_PROVIDER_TOKEN) params: Params
   ) {
+    super();
     // ...
   }
-  // extended method
+  // Extended method
   myMethod(): any {}
 }
-
 
 // logger.module.ts
 @Module({
@@ -400,18 +356,58 @@ class LoggerService extends PinoLogger {
 class LoggerModule {}
 ```
 
-## Notes on `Logger` injection in constructor
+## Notes on logger injection in constructor
 
-Since logger substitution has appeared in NestJS@8 the main purpose of `Logger` class is to be registered via `app.useLogger(app.get(Logger))`. But that requires some internal breaking change, because with such usage NestJS pass logger's context as the last optional argument in logging function. So in current version `Logger`'s methods accept context as a last argument.
+Since NestJS@8, the main purpose of the `Logger` class is to be registered via `app.useLogger(app.get(Logger))`. With this usage, NestJS passes the logger's context as the last optional argument in logging functions.
 
-With such change it's not possible to detect if method was called by app internaly and the last argument is context or `Logger` was injected in some service via `constructor(private logger: Logger) {}` and the last argument is interpolation value for example.
+This creates a limitation in detecting whether a method was called by app internals (where the last argument is context) or by an injected `Logger` instance in a service (where the last argument might be an interpolation value).
+
+## Reuse the Fastify logger configuration
+
+> [!WARNING]
+> This feature is not recommended for most cases. Read on to understand the caveats.
+
+If you use `useExisting: true` with Fastify, you can reuse the Fastify logger configuration by providing the same options in `forRoot`/`forRootAsync`:
+
+```ts
+import { LoggerModule } from 'pino-nestjs'; 
+
+@Module({
+  imports: [
+    LoggerModule.forRoot({
+      useExisting: true,
+    }),
+  ],
+})
+class MyModule {} 
+```
+
+When working with Fastify and pino-nestjs together, you need to understand how logger instances are managed:
+
+1. **Request vs. Application Context**:
+   - Fastify creates a logger with your configuration for each request
+   - NestJS has additional execution contexts (like lifecycle events) that occur outside request context
+   - For these non-request contexts, `Logger`/`PinoLogger` services use a separate pino instance configured via `forRoot`/`forRootAsync`
+
+2. **Configuration Sharing Issues**:
+   - When configuring pino via `FastifyAdapter`, there's no way to extract that configuration and apply it to the out-of-context logger
+   - Without explicit configuration in `forRoot`/`forRootAsync`, the out-of-context logger will use default parameters
+
+3. **Potential Solutions**:
+   - For consistency, you must provide identical configurations to both Fastify and LoggerModule
+   - Better approach: configure only through LoggerModule and drop the `useExisting` option entirely
+
+4. **When to use `useExisting: true`**:
+   - Only when you don't need logging for lifecycle events and application-level logging
+   - Only when using pino with default parameters in Fastify-based NestJS apps
+
+For all other scenarios, using `useExisting: true` will lead to either code duplication or unexpected behavior.
 
 ## Assign extra fields for future calls
 
-You can enrich logs before calling log methods. It's possible by using `assign` method of `PinoLogger` instance. As `Logger` class is used only for NestJS built-in `Logger` substitution via `app.useLogger(...)` this feature is only limited to `PinoLogger` class. Example:
+You can enrich logs using the `assign` method of `PinoLogger`:
 
 ```ts
-
 @Controller('/')
 class TestController {
   constructor(
@@ -421,7 +417,7 @@ class TestController {
 
   @Get()
   get() {
-    // assign extra fields in one place...
+    // Assign extra fields in one place...
     this.logger.assign({ userID: '42' });
     return this.service.test();
   }
@@ -432,22 +428,22 @@ class MyService {
   private readonly logger = new Logger(MyService.name);
 
   test() {
-    // ...and it will be logged in another one
+    // ...and it will be logged in another place
     this.logger.log('hello world');
   }
 }
 ```
 
-By default, this does not extend `Request completed` logs. Set the `assignResponse` parameter to `true` to also enrich response logs automatically emitted by `pino-http`.
+Set the `assignResponse` parameter to `true` to also enrich request completion logs.
 
-## Change pino params at runtime
+## Change Pino parameters at runtime
 
-Pino root instance with passed via module registration params creates a separate child logger for every request. This root logger params can be changed at runtime via `PinoLogger.root` property which is the pointer to logger instance. Example:
+You can modify pino root logger parameters at runtime:
 
 ```ts
 @Controller('/')
 class TestController {
-  @Post('/change-loggin-level')
+  @Post('/change-logging-level')
   setLevel() {
     PinoLogger.root.level = 'info';
     return null;
@@ -457,150 +453,46 @@ class TestController {
 
 ## Expose stack trace and error class in `err` property
 
-By default, `pino-http` exposes `err` property with a stack trace and error details, however, this `err` property contains default error details, which do not tell anything about actual error. To expose actual error details you need you to use a NestJS interceptor which captures exceptions and assigns them to the response object `err` property which is later processed by pino-http:   
+Use the provided interceptor to expose actual error details:
 
 ```typescript
-import { LoggerErrorInterceptor } from 'nestjs-pino';
+import { LoggerErrorInterceptor } from 'pino-nestjs';
 
 const app = await NestFactory.create(AppModule);
 app.useGlobalInterceptors(new LoggerErrorInterceptor());
 ```
 
-## Migration
+## Frequently asked questions
 
-### v1
+#### Q: How do I disable automatic request/response logs?
 
-- All parameters of v.0 are moved to `pinoHttp` property (except `useExisting`).
-- `useExisting` now accept only `true` because you should already know if you want to use preconfigured fastify adapter's logger (and set `true`) or not (and just not define this field).
+**A**: Use the [autoLogging field of pino-http](https://github.com/pinojs/pino-http#pinohttpopts-stream) in the `pinoHttp` configuration.
 
-### v2
+#### Q: How do I pass `X-Request-ID` header or generate UUID for `req.id`?
 
-#### Logger substitution
+**A**: Use the [genReqId field of pino-http](https://github.com/pinojs/pino-http#pinohttpopts-stream) in the `pinoHttp` configuration.
 
-A new more convenient way to inject a custom logger that implements `LoggerService` has appeared in recent versions of NestJS (mind the `bufferLogs` field, it will force NestJS to wait for logger to be ready instead of using built-in logger on start):
+#### Q: How does it work?
 
-```ts
-// main.ts
-import { Logger } from 'nestjs-pino';
-// ...
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  app.useLogger(app.get(Logger));
-// ...
-```
+**A**: It uses [pino-http](https://github.com/pinojs/pino-http) to create a child-logger for each request, and with [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage), `Logger` and `PinoLogger` can access it from any service. This allows logs to be grouped by `req.id`.
 
-Note that for [standalone applications](https://docs.nestjs.com/standalone-applications), buffering has to be [flushed using app.flushLogs()](https://github.com/nestjs/nest/blob/24e6c821a0859448646fd88831f20e4c5ae50980/packages/core/nest-application-context.ts#L136) manually after custom logger is ready to be used by NestJS (refer to [this issue](https://github.com/iamolegga/nestjs-pino/issues/553) for more details):
+#### Q: Why use [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage) instead of [REQUEST scope](https://docs.nestjs.com/fundamentals/injection-scopes#per-request-injection)?
 
-```ts
-// main.ts
-import { Logger } from 'nestjs-pino';
+**A**: REQUEST scope can have [performance issues](https://docs.nestjs.com/fundamentals/injection-scopes#performance) as it creates new instances of each service per request.
 
-// ... 
-  const app = await NestFactory.createApplicationContext(AppModule, { bufferLogs: true });
-  app.useLogger(app.get(Logger));
-  app.flushLogs();
-// ...
-```
+#### Q: What about `pino` built-in methods/levels?
 
-In all the other places you can use built-in `Logger`:
+**A**: Here's the mapping between methods:
 
-```ts
-// my-service.ts
-import { Logger } from '@nestjs/common';
-class MyService {
-  private readonly logger = new Logger(MyService.name);
-}
-```
+| `pino` | `PinoLogger` | NestJS `Logger` |
+|--------|--------------|-----------------|
+| **trace** | **trace** | **verbose** |
+| debug | debug | debug |
+| **info** | **info** | **log** |
+| warn | warn | warn |
+| error | error | error |
+| fatal | fatal | fatal (since nestjs@10.2) |
 
-To quote the official docs:
+#### Q: I use Fastify and want to configure pino at the Adapter level. Can I use that config for the logger?
 
-> If we supply a custom logger via `app.useLogger()`, it will actually be used by Nest internally. That means that our code remains implementation agnostic, while we can easily substitute the default logger for our custom one by calling `app.useLogger()`.
->
-> That way if we follow the steps from the previous section and call `app.useLogger(app.get(MyLogger))`, the following calls to `this.logger.log()` from `MyService` would result in calls to method `log` from `MyLogger` instance.
-
----
-
-**This is recommended to update all your existing `Logger` injections from `nestjs-pino` to `@nestjs/common`. And inject it only in your `main.ts` file as shown above. Support of injection of `Logger` (don't confuse with `PinoLogger`) from `nestjs-pino` directly in class constructors is dropped.**
-
----
-
-Since logger substitution has appeared the main purpose of `Logger` class is to be registered via `app.useLogger(app.get(Logger))`. But that requires some internal breaking change, because with such usage NestJS pass logger's context as the last optional argument in logging function. So in current version `Logger`'s methods accept context as the last argument.
-
-With such change it's not possible to detect if method was called by app internaly and the last argument is context or `Logger` was injected in some service via `constructor(private logger: Logger) {}` and the last argument is interpolation value for example. That's why logging with such injected class still works, but only for 1 argument.
-
-#### NestJS LoggerService interface breaking change
-
-In NestJS@8 all logging methods of built-in `LoggerService` now accept the same arguments without second `context` argument (which is set via injection, see above), for example: `log(message: any, ...optionalParams: any[]): any;`. That makes usage of built-in logger more convenient and compatible with `pino`'s logging methods. So this is a breaking change in NestJS, and you should be aware of it.
-
-In NestJS <= 7 and `nestjs-pino@1` when you call `this.logger.log('foo', 'bar');` there would be such log: `{..."context":"bar","msg":"foo"}` (second argument goes to `context` field by desing). In NestJS 8 and `nestjs-pino@2` (with proper injection that shown above) same call will result in `{..."context":"MyService","msg":"foo"}`, so `context` is passed via injection, but second argument disappear from log, because now it treats as interpolation value and there should be placeholder for it in `message` argument. So if you want to get both `foo` and `bar` in log the right way to do this is: `this.logger.log('foo %s', 'bar');`. More info can be found in [pino docs](https://getpino.io/#/docs/api?id=logging-method-parameters).
-
-## FAQ
-
-**Q**: _How to disable automatic request/response logs?_
-
-**A**: check out [autoLogging field of pino-http](https://github.com/pinojs/pino-http#pinohttpopts-stream) that are set in `pinoHttp` field of `Params`
-
----
-
-**Q**: _How to pass `X-Request-ID` header or generate UUID for `req.id` field of log?_
-
-**A**: check out [genReqId field of pino-http](https://github.com/pinojs/pino-http#pinohttpopts-stream) that are set in `pinoHttp` field of `Params`
-
----
-
-**Q**: _How does it work?_
-
-**A**: It uses [pino-http](https://github.com/pinojs/pino-http) under hood, so every request has it's own [child-logger](https://github.com/pinojs/pino/blob/master/docs/child-loggers.md), and with help of [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage) `Logger` and `PinoLogger` can get it while calling own methods. So your logs can be grouped by `req.id`.
-
----
-
-**Q**: _Why use [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage) instead of [REQUEST scope](https://docs.nestjs.com/fundamentals/injection-scopes#per-request-injection)?_
-
-**A**: [REQUEST scope](https://docs.nestjs.com/fundamentals/injection-scopes#per-request-injection) can have [perfomance issues](https://docs.nestjs.com/fundamentals/injection-scopes#performance). TL;DR: it will have to create an instance of the class (that injects `Logger`) on each request, and that will slow down your response times.
-
----
-
-**Q**: _I'm using old nodejs version, will it work for me?_
-
-**A**: Please check out [history of this feature](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage).
-
----
-
-**Q**: _What about `pino` built-in methods/levels?_
-
-**A**: Pino built-in methods names are not fully compatible with NestJS built-in `LoggerService` methods names, and there is an option which logger you use. Here is methods mapping:
-
-| `pino` method | `PinoLogger` method | NestJS built-in `Logger` method |
-| ------------- | ------------------- | --------------------------------|
-| **trace**     | **trace**           | **verbose**                     |
-| debug         | debug               | debug                           |
-| **info**      | **info**            | **log**                         |
-| warn          | warn                | warn                            |
-| error         | error               | error                           |
-| fatal         | fatal               | fatal (since nestjs@10.2)       |
-
----
-
-**Q**: _Fastify already includes `pino`, and I want to configure it on `Adapter` level, and use this config for logger_
-
-**A**: You can do it by providing `useExisting: true`. But there is one caveat:
-
-Fastify creates logger with your config per every request. And this logger is used by `Logger`/`PinoLogger` services inside that context underhood.
-
-But Nest Application has another contexts of execution, for example [lifecycle events](https://docs.nestjs.com/fundamentals/lifecycle-events), where you still may want to use logger. For that `Logger`/`PinoLogger` services use separate `pino` instance with config, that provided via `forRoot`/`forRootAsync` methods.
-
-So, when you want to configure `pino` via `FastifyAdapter` there is no way to get back this config from fastify and pass it to that _out of context_ logger.
-
-And if you will not pass config via `forRoot`/`forRootAsync` _out of context_ logger will be instantiated with default params. So if you want to configure it with the same options for consistency you have to provide the same config to `LoggerModule` configuration too. But if you already provide it to `LoggerModule` configuration you can drop `useExisting` field from config and drop logger configuration on `FastifyAdapter`, and it will work without code duplication.
-
-So this property (`useExisting: true`) is not recommended, and can be useful only for cases when:
-
-- this logger is not using for lifecycle events and application level logging in NestJS apps based on fastify
-- `pino` is using with default params in NestJS apps based on fastify
-
-All the other cases are lead to either code duplication or unexpected behavior.
-
----
-
-<h2 align="center">Do you use this library?<br/>Don't be shy to give it a star! ★</h2>
-
-<h3 align="center">Also if you are into NestJS you might be interested in one of my <a href="https://github.com/iamolegga#nestjs">other NestJS libs</a>.</h3>
+**A**: You can use `useExisting: true`, but there are [caveats](#reuse-the-fastify-logger-configuration).

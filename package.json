@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-pino",
+  "name": "pino-nestjs",
   "version": "4.3.1",
   "description": "Pino logger for NestJS",
   "main": "index.js",
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iamolegga/nestjs-pino.git"
+    "url": "git+https://github.com/yamcodes/pino-nestjs.git"
   },
   "keywords": [
     "pino",
@@ -34,12 +34,12 @@
     "nest",
     "logger"
   ],
-  "author": "iamolegga <iamolegga@gmail.com> (http://github.com/iamolegga)",
+  "author": "yamcodes <yam@yam.codes> (http://github.com/yamcodes)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/iamolegga/nestjs-pino/issues"
+    "url": "https://github.com/yamcodes/pino-nestjs/issues"
   },
-  "homepage": "https://github.com/iamolegga/nestjs-pino#readme",
+  "homepage": "https://github.com/yamcodes/pino-nestjs#readme",
   "devDependencies": {
     "@eslint/compat": "^1.2.5",
     "@eslint/eslintrc": "^3.2.0",

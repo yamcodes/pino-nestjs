@@ -3,7 +3,7 @@ console.log(`
 
 
 
-\t\tThanks for using nestjs-pino!
+\t\tThanks for using pino-nestjs!
 
 \t\tAs you may know there is a war against Ukraine:
 \t\tbombed cities (including schools, hospitals, etc), hundreds of killed children, millions of refugees.

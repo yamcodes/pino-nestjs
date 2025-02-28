@@ -1,15 +1,15 @@
 queue_rules:
-  - name: dependabot-nestjs-pino
+  - name: dependabot-pino-nestjs
     queue_conditions:
       - author~=^dependabot(|-preview)\[bot\]$
       - -check-failure~=build-lint-test
       - check-success~=build-lint-test
-      - check-success=security/snyk (iamolegga)
+      - check-success=security/snyk (yamcodes)
     merge_conditions:
       - author~=^dependabot(|-preview)\[bot\]$
       - -check-failure~=build-lint-test
       - check-success~=build-lint-test
-      - check-success=security/snyk (iamolegga)
+      - check-success=security/snyk (yamcodes)
     merge_method: rebase
 
 pull_request_rules:

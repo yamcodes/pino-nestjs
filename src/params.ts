@@ -44,7 +44,7 @@ export interface Params {
    * FastifyAdapter, and already configure logger in adapter's config. The Pros
    * and cons of this approach are described in the FAQ section of the
    * documentation:
-   * @see https://github.com/iamolegga/nestjs-pino#faq.
+   * @see https://github.com/yamcodes/pino-nestjs#faq.
    */
   useExisting?: true;
 
