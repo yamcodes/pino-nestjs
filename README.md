@@ -6,29 +6,22 @@
 </p>
 <p align="center">
   <a href="https://github.com/yamcodes/pino-nestjs/actions"><img alt="Tests Status" src="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml/badge.svg?event=push&branch=main"></a>
-  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Total Downloads" src="https://badgen.net/npm/dt/pino-nestjs/total?icon=npm&color=859947"></a>
-  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Bundle Size" src="https://badgen.net/bundlephobia/min/pino-nestjs?icon=npm&color=859947&label=bundle%20size"></a>
-  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Dependency Count" src="https://badgen.net/bundlephobia/dependency-count/pino-nestjs?icon=npm&color=859947&label=dependencies"></a>
   <a href="https://getpino.io/"><img alt="Powered By pino" src="https://badgen.net/static/powered%20by/pino?color=859947"></a>
+  <a href="https://github.com/pinojs/pino-http"><img alt="Powered By pino-http" src="https://badgen.net/static/powered%20by/pino-http?color=859947"></a>
+  <a href="https://coderabbit.com/"><img alt="CodeRabbit Pull Request Reviews" src="https://img.shields.io/coderabbit/prs/github/yamcodes/pino-nestjs?color=859947"></a>
 </p>
 
-
-
-`pino-nestjs` is a [NestJS](https://nestjs.com/) logger powered by [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http). 
-
-This fork of [nestjs-pino](https://github.com/iamolegga/nestjs-pino) fixes the [parameter order inconsistency issue](https://github.com/iamolegga/nestjs-pino/issues/2004):
+Keep your NestJS logs while gaining all the benefits of [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http): structured JSON logs, exceptional performance, and automatic request context tracking.
 
 ```ts
-// With nestjs-pino:
+// Other loggers - violate NestJS parameter order
 this.logger.log(context, 'message'); // ❌ context first, message second
 
-// With NestJS standard logger and pino-nestjs:
+// With pino-nestjs - respect NestJS parameter order
 this.logger.log('message', context); // ✅ message first, context second
 ```
 
-This makes `pino-nestjs` **a true drop-in replacement for NestJS's built-in logger**.
-
-Now you can keep your NestJS logs while gaining all the benefits of [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http): structured JSON logs, exceptional performance, and automatic request context tracking.
+`pino-nestjs` is a **true drop-in replacement for NestJS's built-in logger**.
 
 ## Table of contents
 
