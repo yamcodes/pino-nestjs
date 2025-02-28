@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "pino-nestjs (root)",
+      "path": "."
+    },
+    {
+      "name": "basic (example)",
+      "path": "examples/basic"
+    }
+  ]
+}
