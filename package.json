@@ -2,8 +2,8 @@
   "name": "pino-nestjs",
   "version": "0.1.1",
   "description": "Drop-in Pino logger for NestJS with request context in every log",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --verbose -i --detectOpenHandles --forceExit",
     "lint": "tsc --noemit && eslint \"{src,__tests__}/**/*.ts\" --fix",
