@@ -7,11 +7,8 @@
   "scripts": {
     "test": "jest --verbose -i --detectOpenHandles --forceExit",
     "lint": "tsc --noemit && eslint \"{src,__tests__}/**/*.ts\" --fix",
-    "prebuild": "rimraf dist",
-    "build": "tsc -p tsconfig.build.json",
-    "example": "rimraf dist && tsc && LOG_LEVEL=debug node dist/example/main",
-    "prepublishOnly": "npm run build && cp -r ./dist/* .",
-    "postpublish": "git clean -fd"
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "prepack": "pnpm run build"
   },
   "files": [
     "*.{js,d.ts}",
