@@ -2,18 +2,18 @@
 import {
   MiddlewareConfigProxy,
   ModuleMetadata,
-} from '@nestjs/common/interfaces';
-import { Logger, DestinationStream } from 'pino';
-import { Options } from 'pino-http';
+} from '@nestjs/common/interfaces'
+import { DestinationStream, Logger } from 'pino'
+import { Options } from 'pino-http'
 
-export type PassedLogger = { logger: Logger };
+export type PassedLogger = { logger: Logger }
 
 export interface Params {
   /**
    * Optional parameters for `pino-http` module
    * @see https://github.com/pinojs/pino-http#pinohttpopts-stream
    */
-  pinoHttp?: Options | DestinationStream | [Options, DestinationStream];
+  pinoHttp?: Options | DestinationStream | [Options, DestinationStream]
 
   /**
    * Optional parameter for routing. It should implement interface of
@@ -25,7 +25,7 @@ export interface Params {
    * logging for some specific (or all) routes but keep request context for app
    * logs use `pinoHttp.autoLogging` field.
    */
-  exclude?: Parameters<MiddlewareConfigProxy['exclude']>;
+  exclude?: Parameters<MiddlewareConfigProxy['exclude']>
 
   /**
    * Optional parameter for routing. It should implement interface of
@@ -37,7 +37,7 @@ export interface Params {
    * logging for some specific (or all) routes but keep request context for app
    * logs use `pinoHttp.autoLogging` field.
    */
-  forRoutes?: Parameters<MiddlewareConfigProxy['forRoutes']>;
+  forRoutes?: Parameters<MiddlewareConfigProxy['forRoutes']>
 
   /**
    * Optional parameter to skip pino configuration in case you are using
@@ -46,21 +46,21 @@ export interface Params {
    * documentation:
    * @see https://github.com/yamcodes/pino-nestjs#faq.
    */
-  useExisting?: true;
+  useExisting?: true
 
   /**
    * Optional parameter to change property name `context` in resulted logs,
    * so logs will be like:
    * {"level":30, ... "RENAME_CONTEXT_VALUE_HERE":"AppController" }
    */
-  renameContext?: string;
+  renameContext?: string
 
   /**
    * Optional parameter to also assign the response logger during calls to
    * `PinoLogger.assign`. By default, `assign` does not impact response logs
    * (e.g.`Request completed`).
    */
-  assignResponse?: boolean;
+  assignResponse?: boolean
 }
 
 // for support of nestjs@8 we don't use
@@ -69,14 +69,14 @@ export interface Params {
 // in feature versions, so it's not compatible
 export interface LoggerModuleAsyncParams
   extends Pick<ModuleMetadata, 'imports' | 'providers'> {
-  useFactory: (...args: any[]) => Params | Promise<Params>;
-  inject?: any[];
+  useFactory: (...args: any[]) => Params | Promise<Params>
+  inject?: any[]
 }
 
 export function isPassedLogger(
   pinoHttpProp: any,
 ): pinoHttpProp is PassedLogger {
-  return !!pinoHttpProp && 'logger' in pinoHttpProp;
+  return !!pinoHttpProp && 'logger' in pinoHttpProp
 }
 
-export const PARAMS_PROVIDER_TOKEN = 'pino-params';
+export const PARAMS_PROVIDER_TOKEN = 'pino-params'

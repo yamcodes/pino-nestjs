@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable, Inject, Scope } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import pino from 'pino';
 
-import { Params, isPassedLogger, PARAMS_PROVIDER_TOKEN } from './params';
+import { PARAMS_PROVIDER_TOKEN, Params, isPassedLogger } from './params';
 import { storage } from './storage';
 
 type PinoMethods = Pick<

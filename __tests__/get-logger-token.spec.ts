@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 
-import { getLoggerToken, InjectPinoLogger, PinoLogger } from '../src';
+import { InjectPinoLogger, PinoLogger, getLoggerToken } from '../src';
 
 describe('get-logger-token', () => {
   it('should work', async () => {

@@ -2,25 +2,25 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 
 import {
-  Global,
-  Module,
   DynamicModule,
-  NestModule,
-  MiddlewareConsumer,
-  RequestMethod,
+  Global,
   Inject,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
 } from '@nestjs/common';
 import { Provider } from '@nestjs/common/interfaces';
 import { pinoHttp } from 'pino-http';
 
 import { createProvidersForDecorated } from './InjectPinoLogger';
 import { Logger } from './Logger';
+import { PinoLogger } from './PinoLogger';
 import {
-  Params,
   LoggerModuleAsyncParams,
   PARAMS_PROVIDER_TOKEN,
+  Params,
 } from './params';
-import { PinoLogger } from './PinoLogger';
 import { Store, storage } from './storage';
 
 /**

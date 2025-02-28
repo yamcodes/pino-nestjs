@@ -1,22 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
+import { Controller, Get } from '@nestjs/common'
+import { FastifyAdapter } from '@nestjs/platform-fastify'
 
-import { PinoLogger } from '../src';
+import { PinoLogger } from '../src'
 
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('runtime update', () => {
   for (const PlatformAdapter of platforms) {
     describe(PlatformAdapter.name, () => {
       it('works', async () => {
-        const msg1 = Math.random().toString();
-        const msg2 = Math.random().toString();
-        const messages = [msg1, msg2];
-        let msgIdx = 0;
+        const msg1 = Math.random().toString()
+        const msg2 = Math.random().toString()
+        const messages = [msg1, msg2]
+        let msgIdx = 0
 
-        const pathCheck = '/log-with-level-info';
-        const pathSetLevel = '/set-level-info';
+        const pathCheck = '/log-with-level-info'
+        const pathSetLevel = '/set-level-info'
 
         @Controller('/')
         class TestController {
@@ -24,14 +24,14 @@ describe('runtime update', () => {
 
           @Get(pathCheck)
           check() {
-            this.logger.info(messages[msgIdx++]);
-            return {};
+            this.logger.info(messages[msgIdx++])
+            return {}
           }
 
           @Get(pathSetLevel)
           setLevel() {
-            PinoLogger.root.level = 'info';
-            return {};
+            PinoLogger.root.level = 'info'
+            return {}
           }
         }
 
@@ -39,12 +39,12 @@ describe('runtime update', () => {
           controllers: [TestController],
         })
           .forRoot({ pinoHttp: { level: 'silent' } })
-          .run(pathCheck, pathSetLevel, pathCheck);
+          .run(pathCheck, pathSetLevel, pathCheck)
 
-        expect(logs.some((l) => l.msg === msg1)).toBeFalsy();
-        expect(logs.some((l) => l.msg === msg2)).toBeTruthy();
-      });
-    });
+        expect(logs.some((l) => l.msg === msg1)).toBeFalsy()
+        expect(logs.some((l) => l.msg === msg2)).toBeTruthy()
+      })
+    })
   }
 
   it("doesn't work with useExisting", async () => {
@@ -52,8 +52,8 @@ describe('runtime update', () => {
     class TestController {
       @Get()
       setLevel() {
-        expect(PinoLogger.root).toBeUndefined();
-        return {};
+        expect(PinoLogger.root).toBeUndefined()
+        return {}
       }
     }
 
@@ -61,6 +61,6 @@ describe('runtime update', () => {
       controllers: [TestController],
     })
       .forRoot({ useExisting: true })
-      .run();
-  });
-});
+      .run()
+  })
+})

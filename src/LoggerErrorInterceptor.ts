@@ -4,8 +4,8 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { catchError, Observable, throwError } from 'rxjs';
+} from '@nestjs/common'
+import { Observable, catchError, throwError } from 'rxjs'
 
 @Injectable()
 export class LoggerErrorInterceptor implements NestInterceptor {
@@ -16,19 +16,19 @@ export class LoggerErrorInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((error) => {
         return throwError(() => {
-          const response = context.switchToHttp().getResponse();
+          const response = context.switchToHttp().getResponse()
 
-          const isFastifyResponse = response.raw !== undefined;
+          const isFastifyResponse = response.raw !== undefined
 
           if (isFastifyResponse) {
-            response.raw.err = error;
+            response.raw.err = error
           } else {
-            response.err = error;
+            response.err = error
           }
 
-          return error;
-        });
+          return error
+        })
       }),
-    );
+    )
   }
 }
