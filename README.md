@@ -170,9 +170,9 @@ Key features of this module:
 
 ### Differences from nestjs-pino
 
-This library is a fork of [nestjs-pino](https://github.com/iamolegga/nestjs-pino) with one key improvement: **parameter order compatibility with NestJS**.
+`pino-nestjs` is a fork of [nestjs-pino](https://github.com/iamolegga/nestjs-pino) with one key improvement: **parameter order compatibility with NestJS**.
 
-While nestjs-pino follows Pino's convention (context first, then message), pino-nestjs follows NestJS's approach (message first, then context). This makes pino-nestjs a true drop-in replacement for NestJS's built-in Logger.
+See [nestjs-pino#2004](https://github.com/iamolegga/nestjs-pino/issues/2004) to understand the motivation for this fork.
 
 ```typescript
 // With nestjs-pino (Pino style):
