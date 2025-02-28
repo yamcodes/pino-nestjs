@@ -1,6 +1,6 @@
 {
   "name": "pino-nestjs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Drop-in Pino logger for NestJS with request context in every log",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

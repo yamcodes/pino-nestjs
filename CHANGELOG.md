@@ -1,5 +1,13 @@
 # pino-nestjs
 
+## 0.1.2
+
+### Patch Changes
+
+- Fix build issue _[`b8445e7`](https://github.com/yamcodes/pino-nestjs/commit/b8445e76e4dd8d35549c375ba7ed704f38966737) [@yamcodes](https://github.com/yamcodes)_
+
+  Fix build issue by including the dist folder in the package.
+
 ## 0.1.1
 
 ### Patch Changes
