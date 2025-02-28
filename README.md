@@ -5,7 +5,7 @@
   Drop-in Pino logger for NestJS with request context in every log
 </p>
 <p align="center">
-  <a href="https://github.com/yamcodes/pino-nestjs/actions"><img alt="Tests Status" src="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml/badge.svg?event=push&branch=main"></a>
+  <a href="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml?query=branch%3Amain+event%3Apush"><img alt="Tests Status" src="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml/badge.svg?event=push&branch=main"></a>
   <a href="https://getpino.io/"><img alt="Powered By pino" src="https://badgen.net/static/powered%20by/pino?color=859947"></a>
   <a href="https://github.com/pinojs/pino-http"><img alt="Powered By pino-http" src="https://badgen.net/static/powered%20by/pino-http?color=859947"></a>
   <a href="https://coderabbit.com/"><img alt="CodeRabbit Pull Request Reviews" src="https://img.shields.io/coderabbit/prs/github/yamcodes/pino-nestjs?color=859947"></a>
