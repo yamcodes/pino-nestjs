@@ -1,5 +1,9 @@
-<h1 align="center">pino-nestjs</h1>
-
+<h1 align="center">
+  🌲🐱<br /><code>pino-nestjs</code>
+</h1>
+<p align="center">
+  Drop-in Pino logger for NestJS with request context in every log
+</p>
 <p align="center">
   <a href="https://github.com/yamcodes/pino-nestjs/actions"><img alt="GitHub branch checks state" src="https://badgen.net/github/checks/yamcodes/pino-nestjs"></a>
   <a href="https://snyk.io/test/github/yamcodes/pino-nestjs"><img alt="Known Vulnerabilities" src="https://snyk.io/test/github/yamcodes/pino-nestjs/badge.svg" /></a>
@@ -9,7 +13,21 @@
   <img alt="Supported Fastify" src="https://img.shields.io/badge/supports-Fastify-green" />
 </p>
 
-<p align="center">✨ Pino logger for NestJS 8+ with request context in every log ✨</p>
+`pino-nestjs` is a [NestJS](https://nestjs.com/) logger powered by [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http). 
+
+This fork of [nestjs-pino](https://github.com/iamolegga/nestjs-pino) fixes the [parameter order inconsistency issue](https://github.com/iamolegga/nestjs-pino/issues/2004):
+
+```ts
+// With nestjs-pino:
+this.logger.log(context, 'message'); // ❌ context first, message second
+
+// With NestJS standard logger and pino-nestjs:
+this.logger.log('message', context); // ✅ message first, context second
+```
+
+This makes `pino-nestjs` **a true drop-in replacement for NestJS's built-in logger**.
+
+Now you can keep your NestJS logs while gaining all the benefits of [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http): structured JSON logs, exceptional performance, and automatic request context tracking.
 
 ## Table of contents
 
@@ -74,11 +92,21 @@ export class MyService {
   private readonly logger = new Logger(MyService.name);
   
   foo() {
-    // All logger methods have args format the same as pino, but pino methods
-    // `trace` and `info` are mapped to `verbose` and `log` respectively
-    this.logger.verbose({ foo: 'bar' }, 'baz %s', 'qux');
-    this.logger.debug('foo %s %o', 'bar', { baz: 'qux' });
-    this.logger.log('foo');
+    // NestJS parameter order: message first, then context (if needed)
+    // With pino-nestjs, you can use the standard NestJS logging pattern
+    this.logger.verbose('My verbose message', MyService.name);
+    this.logger.debug('User data processed', { userId: '123', status: 'success' });
+    this.logger.log('Operation completed', MyService.name);
+    
+    // Object logging also works with NestJS parameter order
+    this.logger.warn({ operation: 'data_sync', status: 'warning' }, MyService.name);
+    
+    // Error logging
+    try {
+      // Some operation
+    } catch (error) {
+      this.logger.error(error, error.stack, MyService.name);
+    }
   }
 }
 ```
@@ -103,10 +131,14 @@ export class MyService {
   ) {}
 
   foo() {
-    // PinoLogger has same methods as pino instance
-    this.logger.trace({ foo: 'bar' }, 'baz %s', 'qux');
-    this.logger.debug('foo %s %o', 'bar', { baz: 'qux' });
-    this.logger.info('foo');
+    // When using PinoLogger directly, you still have access to Pino's native format
+    // But pino-nestjs also supports NestJS parameter order: message first, then context
+    this.logger.trace('This is a trace message');
+    this.logger.debug('Debug information', { userId: '123' });
+    this.logger.info('Information message', MyService.name);
+    
+    // Traditional Pino object + message format also works
+    this.logger.trace({ operation: 'init' }, 'System initialized');
   }
 }
 ```
@@ -140,13 +172,29 @@ Key features of this module:
 - Automatic request/response logging (via [pino-http](https://github.com/pinojs/pino-http))
 - Request data binding to logs from any service without passing context (via [AsyncLocalStorage](https://nodejs.org/api/async_context.html#async_context_class_asynclocalstorage))
 - Alternative `PinoLogger` with the same API as `pino` for experienced pino users
+- **NestJS compatible parameter order** (message first, context second) for direct compatibility with NestJS Logger
 
-| Logger | Nest App Logger | Logger Service | Auto-bind Request Data |
-|--------|:--------------:|:--------------:|:----------------------:|
-| [nest-winston](https://github.com/gremo/nest-winston) | ✅ | ✅ | ❌ |
-| [pino-nestjs-logger](https://github.com/jtmthf/pino-nestjs-logger) | ✅ | ✅ | ❌ |
-| [nestjs-pino](https://github.com/iamolegga/nestjs-pino) | ✅ | ✅ | ✅ |
-| [**pino-nestjs**](https://github.com/yamcodes/pino-nestjs) | ✅ | ✅ | ✅ |
+### Differences from nestjs-pino
+
+This library is a fork of [nestjs-pino](https://github.com/iamolegga/nestjs-pino) with one key improvement: **parameter order compatibility with NestJS**.
+
+While nestjs-pino follows Pino's convention (context first, then message), pino-nestjs follows NestJS's approach (message first, then context). This makes pino-nestjs a true drop-in replacement for NestJS's built-in Logger.
+
+**Example usage:**
+```typescript
+// With nestjs-pino (Pino style):
+this.logger.log({ context: 'MyService' }, 'Hello World');
+
+// With pino-nestjs (NestJS style):
+this.logger.log('Hello World', 'MyService');
+```
+
+| Logger | Nest App Logger | Logger Service | Auto-bind Request Data | NestJS Parameter Order |
+|--------|:--------------:|:--------------:|:----------------------:|:----------------------:|
+| [nest-winston](https://github.com/gremo/nest-winston) | ✅ | ✅ | ❌ | ✅ |
+| [nestjs-pino-logger](https://github.com/jtmthf/nestjs-pino-logger) | ✅ | ✅ | ❌ | ✅ |
+| [nestjs-pino](https://github.com/iamolegga/nestjs-pino) | ✅ | ✅ | ✅ | ❌ |
+| [**pino-nestjs**](https://github.com/yamcodes/pino-nestjs) | ✅ | ✅ | ✅ | ✅ |
 
 ## Configuration
 
