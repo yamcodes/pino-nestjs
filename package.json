@@ -1,6 +1,6 @@
 {
   "name": "pino-nestjs",
-  "version": "4.3.1",
+  "version": "0.0.0",
   "description": "Pino logger for NestJS",
   "main": "index.js",
   "types": "index.d.ts",
@@ -11,8 +11,7 @@
     "build": "tsc -p tsconfig.build.json",
     "example": "rimraf dist && tsc && LOG_LEVEL=debug node dist/example/main",
     "prepublishOnly": "npm run build && cp -r ./dist/* .",
-    "postpublish": "git clean -fd",
-    "postinstall": "node postinstall.js"
+    "postpublish": "git clean -fd"
   },
   "files": [
     "*.{js,d.ts}",
