@@ -174,14 +174,15 @@ This library is a fork of [nestjs-pino](https://github.com/iamolegga/nestjs-pino
 
 While nestjs-pino follows Pino's convention (context first, then message), pino-nestjs follows NestJS's approach (message first, then context). This makes pino-nestjs a true drop-in replacement for NestJS's built-in Logger.
 
-**Example usage:**
 ```typescript
 // With nestjs-pino (Pino style):
-this.logger.log({ context: 'MyService' }, 'Hello World');
+this.logger.log({ foo: 'bar' }, 'Hello World');
 
 // With pino-nestjs (NestJS style):
-this.logger.log('Hello World', 'MyService');
+this.logger.log('Hello World', { foo: 'bar' });
 ```
+
+Unlike nestjs-pino which follows Pino's convention (context first, then message), `pino-nestjs` acts as a true drop-in replacement for NestJS's built-in Logger by using the NestJS parameter order (message first, then context).
 
 | Logger | Nest App Logger | Logger Service | Auto-bind Request Data | NestJS Parameter Order |
 |--------|:--------------:|:--------------:|:----------------------:|:----------------------:|
