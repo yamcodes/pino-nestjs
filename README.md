@@ -5,13 +5,14 @@
   Drop-in Pino logger for NestJS with request context in every log
 </p>
 <p align="center">
-  <a href="https://github.com/yamcodes/pino-nestjs/actions"><img alt="GitHub branch checks state" src="https://badgen.net/github/checks/yamcodes/pino-nestjs"></a>
-  <a href="https://snyk.io/test/github/yamcodes/pino-nestjs"><img alt="Known Vulnerabilities" src="https://snyk.io/test/github/yamcodes/pino-nestjs/badge.svg" /></a>
-  <a href="https://libraries.io/npm/pino-nestjs"><img alt="Libraries.io" src="https://img.shields.io/librariesio/release/npm/pino-nestjs"></a>
-  <img alt="Dependabot" src="https://badgen.net/github/dependabot/yamcodes/pino-nestjs">
-  <img alt="Supports Express" src="https://img.shields.io/badge/supports-Express-green" />
-  <img alt="Supported Fastify" src="https://img.shields.io/badge/supports-Fastify-green" />
+  <a href="https://github.com/yamcodes/pino-nestjs/actions"><img alt="Tests Status" src="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml/badge.svg?event=push&branch=main"></a>
+  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Total Downloads" src="https://badgen.net/npm/dt/pino-nestjs/total?icon=npm&color=blue"></a>
+  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Bundle Size" src="https://badgen.net/bundlephobia/min/pino-nestjs?icon=npm&color=blue&label=bundle%20size"></a>
+  <a href="https://www.npmjs.com/package/pino-nestjs"><img alt="Dependency Count" src="https://badgen.net/bundlephobia/dependency-count/pino-nestjs?icon=npm&color=blue&label=dependencies"></a>
+  <a href="https://getpino.io/"><img alt="Powered By pino" src="https://badgen.net/static/powered by/pino"></a>
 </p>
+
+
 
 `pino-nestjs` is a [NestJS](https://nestjs.com/) logger powered by [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http). 
 
