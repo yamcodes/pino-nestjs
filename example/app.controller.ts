@@ -1,14 +1,14 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common'
 
-import { InjectPinoLogger, PinoLogger } from '../src';
+import { InjectPinoLogger, PinoLogger } from '../src'
 
-import { MyService } from './my.service';
+import { MyService } from './my.service'
 
 @Controller()
 export class AppController {
   // Choose which one do you like more: usage of builtin logger that implements
   // `LoggerService` (verbose?,debug?,log,warn,error) or ...
-  private readonly builtInLogger = new Logger(AppController.name);
+  private readonly builtInLogger = new Logger(AppController.name)
 
   constructor(
     private readonly myService: MyService,
@@ -19,31 +19,31 @@ export class AppController {
     private readonly pinoLogger1: PinoLogger,
     private readonly pinoLogger2: PinoLogger,
   ) {
-    pinoLogger2.setContext(AppController.name);
+    pinoLogger2.setContext(AppController.name)
   }
 
   @Get()
   getHello(): string {
-    this.builtInLogger.verbose({ foo: 'bar' }, 'baz %s', 'qux'); // will be skipped because debug level is set
-    this.builtInLogger.debug({ foo: 'bar' }, 'baz %s', 'qux');
-    this.builtInLogger.log({ foo: 'bar' }, 'baz %s', 'qux');
-    this.builtInLogger.warn({ foo: 'bar' }, 'baz %s', 'qux');
-    this.builtInLogger.error({ foo: 'bar' }, 'baz %s', 'qux');
+    this.builtInLogger.verbose({ foo: 'bar' }, 'baz %s', 'qux') // will be skipped because debug level is set
+    this.builtInLogger.debug({ foo: 'bar' }, 'baz %s', 'qux')
+    this.builtInLogger.log({ foo: 'bar' }, 'baz %s', 'qux')
+    this.builtInLogger.warn({ foo: 'bar' }, 'baz %s', 'qux')
+    this.builtInLogger.error({ foo: 'bar' }, 'baz %s', 'qux')
 
-    this.pinoLogger1.trace({ foo: 'bar' }, 'baz %s', 'qux'); // will be skipped because debug level is set
-    this.pinoLogger1.debug({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger1.info({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger1.warn({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger1.error({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger1.fatal({ foo: 'bar' }, 'baz %s', 'qux');
+    this.pinoLogger1.trace({ foo: 'bar' }, 'baz %s', 'qux') // will be skipped because debug level is set
+    this.pinoLogger1.debug({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger1.info({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger1.warn({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger1.error({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger1.fatal({ foo: 'bar' }, 'baz %s', 'qux')
 
-    this.pinoLogger2.trace({ foo: 'bar' }, 'baz %s', 'qux'); // will be skipped because debug level is set
-    this.pinoLogger2.debug({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger2.info({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger2.warn({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger2.error({ foo: 'bar' }, 'baz %s', 'qux');
-    this.pinoLogger2.fatal({ foo: 'bar' }, 'baz %s', 'qux');
+    this.pinoLogger2.trace({ foo: 'bar' }, 'baz %s', 'qux') // will be skipped because debug level is set
+    this.pinoLogger2.debug({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger2.info({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger2.warn({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger2.error({ foo: 'bar' }, 'baz %s', 'qux')
+    this.pinoLogger2.fatal({ foo: 'bar' }, 'baz %s', 'qux')
 
-    return `Hello ${this.myService.getWorld()}`;
+    return `Hello ${this.myService.getWorld()}`
   }
 }

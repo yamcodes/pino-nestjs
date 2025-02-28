@@ -1,10 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { Controller, Get } from '@nestjs/common'
+import { APP_INTERCEPTOR } from '@nestjs/core'
 
-import { LoggerErrorInterceptor } from '../src';
+import { LoggerErrorInterceptor } from '../src'
 
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('error intercepting', () => {
   for (const PlatformAdapter of platforms) {
@@ -12,9 +12,9 @@ describe('error intercepting', () => {
       it('logger is publicly accessible', async () => {
         class CustomError extends Error {
           constructor(message?: string) {
-            super(message);
-            Object.setPrototypeOf(this, new.target.prototype);
-            Error.captureStackTrace(this, this.constructor);
+            super(message)
+            Object.setPrototypeOf(this, new.target.prototype)
+            Error.captureStackTrace(this, this.constructor)
           }
         }
 
@@ -22,7 +22,7 @@ describe('error intercepting', () => {
         class TestController {
           @Get()
           get() {
-            throw new CustomError('Test Error Message');
+            throw new CustomError('Test Error Message')
           }
         }
 
@@ -34,7 +34,7 @@ describe('error intercepting', () => {
         })
           .forRoot()
           .expectError(500)
-          .run();
+          .run()
 
         expect(
           result.find((log) => log.msg === 'request errored'),
@@ -43,8 +43,8 @@ describe('error intercepting', () => {
             message: 'Test Error Message',
             type: 'CustomError',
           },
-        });
-      });
-    });
+        })
+      })
+    })
   }
-});
+})

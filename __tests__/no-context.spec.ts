@@ -1,24 +1,24 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common'
 
-import { InjectPinoLogger, PinoLogger } from '../src';
+import { InjectPinoLogger, PinoLogger } from '../src'
 
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('no context', () => {
   for (const PlatformAdapter of platforms) {
     describe(PlatformAdapter.name, () => {
       it(Logger.name, async () => {
-        const msg = Math.random().toString();
+        const msg = Math.random().toString()
 
         @Controller('/')
         class TestController {
-          private readonly logger = new Logger();
+          private readonly logger = new Logger()
 
           @Get()
           get() {
-            this.logger.log(msg);
-            return {};
+            this.logger.log(msg)
+            return {}
           }
         }
 
@@ -26,15 +26,15 @@ describe('no context', () => {
           controllers: [TestController],
         })
           .forRoot()
-          .run();
+          .run()
 
-        const ctrlLog = logs.find((v) => v.msg === msg);
-        expect(ctrlLog).toBeTruthy();
-        expect(ctrlLog).not.toHaveProperty('context');
-      });
+        const ctrlLog = logs.find((v) => v.msg === msg)
+        expect(ctrlLog).toBeTruthy()
+        expect(ctrlLog).not.toHaveProperty('context')
+      })
 
       it(PinoLogger.name, async () => {
-        const msg = Math.random().toString();
+        const msg = Math.random().toString()
 
         @Controller('/')
         class TestController {
@@ -44,8 +44,8 @@ describe('no context', () => {
 
           @Get()
           get() {
-            this.logger.info(msg);
-            return {};
+            this.logger.info(msg)
+            return {}
           }
         }
 
@@ -53,12 +53,12 @@ describe('no context', () => {
           controllers: [TestController],
         })
           .forRoot()
-          .run();
+          .run()
 
-        const ctrlLog = logs.find((v) => v.msg === msg);
-        expect(ctrlLog).toBeTruthy();
-        expect(ctrlLog).not.toHaveProperty('context');
-      });
-    });
+        const ctrlLog = logs.find((v) => v.msg === msg)
+        expect(ctrlLog).toBeTruthy()
+        expect(ctrlLog).not.toHaveProperty('context')
+      })
+    })
   }
-});
+})

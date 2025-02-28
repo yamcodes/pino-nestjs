@@ -1,9 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common'
 
-import { PinoLogger } from '../src';
+import { PinoLogger } from '../src'
 
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('getting the logger instance', () => {
   for (const PlatformAdapter of platforms) {
@@ -14,7 +14,7 @@ describe('getting the logger instance', () => {
           constructor(private readonly logger: PinoLogger) {}
           @Get()
           get() {
-            expect(this.logger.logger.constructor.name).toEqual('Pino');
+            expect(this.logger.logger.constructor.name).toEqual('Pino')
           }
         }
 
@@ -22,8 +22,8 @@ describe('getting the logger instance', () => {
           controllers: [TestController],
         })
           .forRoot()
-          .run();
-      });
-    });
+          .run()
+      })
+    })
   }
-});
+})

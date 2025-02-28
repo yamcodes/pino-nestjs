@@ -1,34 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IncomingMessage, ServerResponse } from 'node:http';
+import { IncomingMessage, ServerResponse } from 'node:http'
 
 import {
-  Global,
-  Module,
   DynamicModule,
-  NestModule,
-  MiddlewareConsumer,
-  RequestMethod,
+  Global,
   Inject,
-} from '@nestjs/common';
-import { Provider } from '@nestjs/common/interfaces';
-import { pinoHttp } from 'pino-http';
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common'
+import { Provider } from '@nestjs/common/interfaces'
+import { pinoHttp } from 'pino-http'
 
-import { createProvidersForDecorated } from './InjectPinoLogger';
-import { Logger } from './Logger';
+import { createProvidersForDecorated } from './InjectPinoLogger'
+import { Logger } from './Logger'
+import { PinoLogger } from './PinoLogger'
 import {
-  Params,
   LoggerModuleAsyncParams,
   PARAMS_PROVIDER_TOKEN,
-} from './params';
-import { PinoLogger } from './PinoLogger';
-import { Store, storage } from './storage';
+  Params,
+} from './params'
+import { Store, storage } from './storage'
 
 /**
  * As NestJS@11 still supports express@4 `*`-style routing by itself let's keep
  * it for the backward compatibility. On the next major NestJS release `*` we
  * can replace it with `/{*splat}`, and drop the support for NestJS@9 and below.
  */
-const DEFAULT_ROUTES = [{ path: '*', method: RequestMethod.ALL }];
+const DEFAULT_ROUTES = [{ path: '*', method: RequestMethod.ALL }]
 
 @Global()
 @Module({ providers: [Logger], exports: [Logger] })
@@ -37,15 +37,15 @@ export class LoggerModule implements NestModule {
     const paramsProvider: Provider<Params> = {
       provide: PARAMS_PROVIDER_TOKEN,
       useValue: params || {},
-    };
+    }
 
-    const decorated = createProvidersForDecorated();
+    const decorated = createProvidersForDecorated()
 
     return {
       module: LoggerModule,
       providers: [Logger, ...decorated, PinoLogger, paramsProvider],
       exports: [Logger, ...decorated, PinoLogger, paramsProvider],
-    };
+    }
   }
 
   static forRootAsync(params: LoggerModuleAsyncParams): DynamicModule {
@@ -53,9 +53,9 @@ export class LoggerModule implements NestModule {
       provide: PARAMS_PROVIDER_TOKEN,
       useFactory: params.useFactory,
       inject: params.inject,
-    };
+    }
 
-    const decorated = createProvidersForDecorated();
+    const decorated = createProvidersForDecorated()
 
     const providers: any[] = [
       Logger,
@@ -63,14 +63,14 @@ export class LoggerModule implements NestModule {
       PinoLogger,
       paramsProvider,
       ...(params.providers || []),
-    ];
+    ]
 
     return {
       module: LoggerModule,
       imports: params.imports,
       providers,
       exports: [Logger, ...decorated, PinoLogger, paramsProvider],
-    };
+    }
   }
 
   constructor(@Inject(PARAMS_PROVIDER_TOKEN) private readonly params: Params) {}
@@ -82,21 +82,21 @@ export class LoggerModule implements NestModule {
       pinoHttp,
       useExisting,
       assignResponse,
-    } = this.params;
+    } = this.params
 
     const middlewares = createLoggerMiddlewares(
       pinoHttp || {},
       useExisting,
       assignResponse,
-    );
+    )
 
     if (exclude) {
       consumer
         .apply(...middlewares)
         .exclude(...exclude)
-        .forRoutes(...forRoutes);
+        .forRoutes(...forRoutes)
     } else {
-      consumer.apply(...middlewares).forRoutes(...forRoutes);
+      consumer.apply(...middlewares).forRoutes(...forRoutes)
     }
   }
 }
@@ -107,20 +107,20 @@ function createLoggerMiddlewares(
   assignResponse = false,
 ) {
   if (useExisting) {
-    return [bindLoggerMiddlewareFactory(useExisting, assignResponse)];
+    return [bindLoggerMiddlewareFactory(useExisting, assignResponse)]
   }
 
   const middleware = pinoHttp(
     ...(Array.isArray(params) ? params : [params as any]),
-  );
+  )
 
   // @ts-expect-error: root is readonly field, but this is the place where
   // it's set actually
-  PinoLogger.root = middleware.logger;
+  PinoLogger.root = middleware.logger
 
   // FIXME: params type here is pinoHttp.Options | pino.DestinationStream
   // pinoHttp has two overloads, each of them takes those types
-  return [middleware, bindLoggerMiddlewareFactory(useExisting, assignResponse)];
+  return [middleware, bindLoggerMiddlewareFactory(useExisting, assignResponse)]
 }
 
 function bindLoggerMiddlewareFactory(
@@ -132,16 +132,16 @@ function bindLoggerMiddlewareFactory(
     res: ServerResponse,
     next: () => void,
   ) {
-    let log = req.log;
-    let resLog = assignResponse ? res.log : undefined;
+    let log = req.log
+    let resLog = assignResponse ? res.log : undefined
 
     if (!useExisting && req.allLogs) {
-      log = req.allLogs[req.allLogs.length - 1]!;
+      log = req.allLogs[req.allLogs.length - 1]!
     }
     if (assignResponse && !useExisting && res.allLogs) {
-      resLog = res.allLogs[res.allLogs.length - 1]!;
+      resLog = res.allLogs[res.allLogs.length - 1]!
     }
 
-    storage.run(new Store(log, resLog), next);
-  };
+    storage.run(new Store(log, resLog), next)
+  }
 }

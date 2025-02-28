@@ -1,6 +1,6 @@
-import { AsyncLocalStorage } from 'async_hooks';
+import { AsyncLocalStorage } from 'async_hooks'
 
-import { Logger } from 'pino';
+import { Logger } from 'pino'
 
 export class Store {
   constructor(
@@ -9,4 +9,4 @@ export class Store {
   ) {}
 }
 
-export const storage = new AsyncLocalStorage<Store>();
+export const storage = new AsyncLocalStorage<Store>()

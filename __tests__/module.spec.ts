@@ -1,12 +1,12 @@
-import { Module, Controller, Get, Injectable, Logger } from '@nestjs/common';
+import { Controller, Get, Injectable, Logger, Module } from '@nestjs/common'
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-import MemoryStream = require('memorystream');
+import MemoryStream = require('memorystream')
 
-import { LoggerModule, Params } from '../src';
+import { LoggerModule, Params } from '../src'
 
-import { LogsContainer } from './utils/logs';
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { LogsContainer } from './utils/logs'
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('module initialization', () => {
   for (const PlatformAdapter of platforms) {
@@ -15,12 +15,12 @@ describe('module initialization', () => {
         it('should work properly without params', async () => {
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(TestController.name);
+            private readonly logger = new Logger(TestController.name)
 
             @Get('/')
             get() {
-              this.logger.log('');
-              return {};
+              this.logger.log('')
+              return {}
             }
           }
 
@@ -29,19 +29,19 @@ describe('module initialization', () => {
             controllers: [TestController],
           })
             .forRoot(undefined, true)
-            .run();
-        });
+            .run()
+        })
 
         it('should work properly with single value of `httpPino` property', async () => {
-          const msg = Math.random().toString();
+          const msg = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(TestController.name);
+            private readonly logger = new Logger(TestController.name)
             @Get('/')
             get() {
-              this.logger.log(msg);
-              return {};
+              this.logger.log(msg)
+              return {}
             }
           }
 
@@ -49,22 +49,22 @@ describe('module initialization', () => {
             controllers: [TestController],
           })
             .forRoot({ pinoHttp: { level: 'info' } })
-            .run();
+            .run()
 
-          expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-        });
+          expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+        })
 
         it('should work properly with array as value of `httpPino` property', async () => {
-          const stream = new MemoryStream('', { readable: false });
-          const msg = Math.random().toString();
+          const stream = new MemoryStream('', { readable: false })
+          const msg = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(TestController.name);
+            private readonly logger = new Logger(TestController.name)
             @Get('/')
             get() {
-              this.logger.log(msg);
-              return {};
+              this.logger.log(msg)
+              return {}
             }
           }
 
@@ -72,30 +72,30 @@ describe('module initialization', () => {
             controllers: [TestController],
           })
             .forRoot({ pinoHttp: [{ level: 'info' }, stream] }, true)
-            .run();
+            .run()
 
-          const logs = LogsContainer.from(stream);
-          expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-        });
-      });
+          const logs = LogsContainer.from(stream)
+          expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+        })
+      })
 
       describe('forRootAsync', () => {
         it('should work properly when useFactory returns single value of `httpPino` property', async () => {
-          const msg = Math.random().toString();
+          const msg = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(TestController.name);
+            private readonly logger = new Logger(TestController.name)
             @Get('/')
             get() {
-              this.logger.log(msg);
-              return {};
+              this.logger.log(msg)
+              return {}
             }
           }
 
           @Injectable()
           class Config {
-            readonly level = 'info';
+            readonly level = 'info'
           }
 
           @Module({
@@ -111,31 +111,31 @@ describe('module initialization', () => {
               imports: [ConfigModule],
               inject: [Config],
               useFactory: (cfg: Config) => {
-                return { pinoHttp: { level: cfg.level } };
+                return { pinoHttp: { level: cfg.level } }
               },
             })
-            .run();
+            .run()
 
-          expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-        });
+          expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+        })
 
         it('should work properly when useFactory returns array as value of `httpPino` property', async () => {
-          const stream = new MemoryStream('', { readable: false });
-          const msg = Math.random().toString();
+          const stream = new MemoryStream('', { readable: false })
+          const msg = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(TestController.name);
+            private readonly logger = new Logger(TestController.name)
             @Get('/')
             get() {
-              this.logger.log(msg);
-              return {};
+              this.logger.log(msg)
+              return {}
             }
           }
 
           @Injectable()
           class Config {
-            readonly level = 'info';
+            readonly level = 'info'
           }
 
           @Module({
@@ -152,33 +152,33 @@ describe('module initialization', () => {
                 imports: [ConfigModule],
                 inject: [Config],
                 useFactory: (cfg: Config) => {
-                  return { pinoHttp: [{ level: cfg.level }, stream] };
+                  return { pinoHttp: [{ level: cfg.level }, stream] }
                 },
               },
               true,
             )
-            .run();
+            .run()
 
-          const logs = LogsContainer.from(stream);
-          expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-        });
+          const logs = LogsContainer.from(stream)
+          expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+        })
 
         it('should work properly when pass deps via providers', async () => {
-          const msg = Math.random().toString();
+          const msg = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(TestController.name);
+            private readonly logger = new Logger(TestController.name)
             @Get('/')
             get() {
-              this.logger.log(msg);
-              return {};
+              this.logger.log(msg)
+              return {}
             }
           }
 
           @Injectable()
           class Config {
-            readonly level = 'info';
+            readonly level = 'info'
           }
 
           const logs = await new TestCase(new PlatformAdapter(), {
@@ -188,24 +188,24 @@ describe('module initialization', () => {
               providers: [Config],
               inject: [Config],
               useFactory: (cfg: Config) => {
-                return { pinoHttp: { level: cfg.level } };
+                return { pinoHttp: { level: cfg.level } }
               },
             })
-            .run();
+            .run()
 
-          expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-        });
+          expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+        })
 
         it('should work properly when useFactory returns Promise', async () => {
-          const msg = Math.random().toString();
+          const msg = Math.random().toString()
 
           @Controller('/')
           class TestController {
-            private readonly logger = new Logger(TestController.name);
+            private readonly logger = new Logger(TestController.name)
             @Get('/')
             get() {
-              this.logger.log(msg);
-              return {};
+              this.logger.log(msg)
+              return {}
             }
           }
 
@@ -214,14 +214,14 @@ describe('module initialization', () => {
           })
             .forRootAsync({
               useFactory: async (): Promise<Params> => {
-                return { pinoHttp: { level: 'info' } };
+                return { pinoHttp: { level: 'info' } }
               },
             })
-            .run();
+            .run()
 
-          expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-        });
-      });
-    });
+          expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+        })
+      })
+    })
   }
-});
+})

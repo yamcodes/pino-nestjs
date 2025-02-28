@@ -1,16 +1,16 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common'
 
-import { PinoLogger, InjectPinoLogger } from '../src';
+import { InjectPinoLogger, PinoLogger } from '../src'
 
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('rename context property name', () => {
   for (const PlatformAdapter of platforms) {
     describe(PlatformAdapter.name, () => {
       it(InjectPinoLogger.name, async () => {
-        const ctxFiledName = 'ctx';
-        const msg = Math.random().toString();
+        const ctxFiledName = 'ctx'
+        const msg = Math.random().toString()
 
         @Controller('/')
         class TestController {
@@ -20,8 +20,8 @@ describe('rename context property name', () => {
           ) {}
           @Get()
           get() {
-            this.logger.info(msg);
-            return {};
+            this.logger.info(msg)
+            return {}
           }
         }
 
@@ -29,30 +29,30 @@ describe('rename context property name', () => {
           controllers: [TestController],
         })
           .forRoot({ renameContext: ctxFiledName })
-          .run();
+          .run()
         expect(
           logs.some(
             (v) =>
               v.req && v[ctxFiledName] === TestController.name && v.msg === msg,
           ),
-        ).toBeTruthy();
-        expect(logs.getStartLog()).toHaveProperty(ctxFiledName);
-      });
+        ).toBeTruthy()
+        expect(logs.getStartLog()).toHaveProperty(ctxFiledName)
+      })
 
       it(PinoLogger.name, async () => {
-        const ctxFiledName = 'ctx';
-        const msg = Math.random().toString();
+        const ctxFiledName = 'ctx'
+        const msg = Math.random().toString()
 
         @Controller('/')
         class TestController {
           constructor(private readonly logger: PinoLogger) {
-            this.logger.setContext(TestController.name);
+            this.logger.setContext(TestController.name)
           }
 
           @Get()
           get() {
-            this.logger.info(msg);
-            return {};
+            this.logger.info(msg)
+            return {}
           }
         }
 
@@ -60,27 +60,27 @@ describe('rename context property name', () => {
           controllers: [TestController],
         })
           .forRoot({ renameContext: ctxFiledName })
-          .run();
+          .run()
         expect(
           logs.some(
             (v) =>
               v.req && v[ctxFiledName] === TestController.name && v.msg === msg,
           ),
-        ).toBeTruthy();
-        expect(logs.getStartLog()).toHaveProperty(ctxFiledName);
-      });
+        ).toBeTruthy()
+        expect(logs.getStartLog()).toHaveProperty(ctxFiledName)
+      })
 
       it(Logger.name, async () => {
-        const ctxFiledName = 'ctx';
-        const msg = Math.random().toString();
+        const ctxFiledName = 'ctx'
+        const msg = Math.random().toString()
 
         @Controller('/')
         class TestController {
-          private readonly logger = new Logger(TestController.name);
+          private readonly logger = new Logger(TestController.name)
           @Get()
           get() {
-            this.logger.log(msg);
-            return {};
+            this.logger.log(msg)
+            return {}
           }
         }
 
@@ -88,15 +88,15 @@ describe('rename context property name', () => {
           controllers: [TestController],
         })
           .forRoot({ renameContext: ctxFiledName })
-          .run();
+          .run()
         expect(
           logs.some(
             (v) =>
               v.req && v[ctxFiledName] === TestController.name && v.msg === msg,
           ),
-        ).toBeTruthy();
-        expect(logs.getStartLog()).toHaveProperty(ctxFiledName);
-      });
-    });
+        ).toBeTruthy()
+        expect(logs.getStartLog()).toHaveProperty(ctxFiledName)
+      })
+    })
   }
-});
+})

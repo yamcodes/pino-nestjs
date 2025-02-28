@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable, Inject, Scope } from '@nestjs/common';
-import pino from 'pino';
+import { Inject, Injectable, Scope } from '@nestjs/common'
+import pino from 'pino'
 
-import { Params, isPassedLogger, PARAMS_PROVIDER_TOKEN } from './params';
-import { storage } from './storage';
+import { PARAMS_PROVIDER_TOKEN, Params, isPassedLogger } from './params'
+import { storage } from './storage'
 
 type PinoMethods = Pick<
   pino.Logger,
   'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal'
->;
+>
 
 /**
  * This is copy of pino.LogFn but with possibilty to make method override.
@@ -25,15 +25,15 @@ type PinoMethods = Pick<
  */
 type LoggerFn =
   | ((msg: string, ...args: any[]) => void)
-  | ((obj: object, msg?: string, ...args: any[]) => void);
+  | ((obj: object, msg?: string, ...args: any[]) => void)
 
-let outOfContext: pino.Logger | undefined;
+let outOfContext: pino.Logger | undefined
 
 export function __resetOutOfContextForTests() {
-  outOfContext = undefined;
+  outOfContext = undefined
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore reset root for tests only
-  PinoLogger.root = undefined;
+  PinoLogger.root = undefined
 }
 
 @Injectable({ scope: Scope.TRANSIENT })
@@ -43,11 +43,11 @@ export class PinoLogger implements PinoMethods {
    * Accessible only when `useExisting` is not set to `true` in `Params`.
    * Readonly, but you can change it's properties.
    */
-  static readonly root: pino.Logger;
+  static readonly root: pino.Logger
 
-  protected context = '';
-  protected readonly contextName: string;
-  protected readonly errorKey: string = 'err';
+  protected context = ''
+  protected readonly contextName: string
+  protected readonly errorKey: string = 'err'
 
   constructor(
     @Inject(PARAMS_PROVIDER_TOKEN) { pinoHttp, renameContext }: Params,
@@ -57,83 +57,83 @@ export class PinoLogger implements PinoMethods {
       'customAttributeKeys' in pinoHttp &&
       typeof pinoHttp.customAttributeKeys !== 'undefined'
     ) {
-      this.errorKey = pinoHttp.customAttributeKeys.err ?? 'err';
+      this.errorKey = pinoHttp.customAttributeKeys.err ?? 'err'
     }
 
     if (!outOfContext) {
       if (Array.isArray(pinoHttp)) {
-        outOfContext = pino(...pinoHttp);
+        outOfContext = pino(...pinoHttp)
       } else if (isPassedLogger(pinoHttp)) {
-        outOfContext = pinoHttp.logger;
+        outOfContext = pinoHttp.logger
       } else if (
         typeof pinoHttp === 'object' &&
         'stream' in pinoHttp &&
         typeof pinoHttp.stream !== 'undefined'
       ) {
-        outOfContext = pino(pinoHttp, pinoHttp.stream);
+        outOfContext = pino(pinoHttp, pinoHttp.stream)
       } else {
-        outOfContext = pino(pinoHttp);
+        outOfContext = pino(pinoHttp)
       }
     }
 
-    this.contextName = renameContext || 'context';
+    this.contextName = renameContext || 'context'
   }
 
   get logger(): pino.Logger {
     // outOfContext is always set in runtime before starts using
 
-    return storage.getStore()?.logger || outOfContext!;
+    return storage.getStore()?.logger || outOfContext!
   }
 
-  trace(msg: string, ...args: any[]): void;
-  trace(obj: unknown, msg?: string, ...args: any[]): void;
+  trace(msg: string, ...args: any[]): void
+  trace(obj: unknown, msg?: string, ...args: any[]): void
   trace(...args: Parameters<LoggerFn>) {
-    this.call('trace', ...args);
+    this.call('trace', ...args)
   }
 
-  debug(msg: string, ...args: any[]): void;
-  debug(obj: unknown, msg?: string, ...args: any[]): void;
+  debug(msg: string, ...args: any[]): void
+  debug(obj: unknown, msg?: string, ...args: any[]): void
   debug(...args: Parameters<LoggerFn>) {
-    this.call('debug', ...args);
+    this.call('debug', ...args)
   }
 
-  info(msg: string, ...args: any[]): void;
-  info(obj: unknown, msg?: string, ...args: any[]): void;
+  info(msg: string, ...args: any[]): void
+  info(obj: unknown, msg?: string, ...args: any[]): void
   info(...args: Parameters<LoggerFn>) {
-    this.call('info', ...args);
+    this.call('info', ...args)
   }
 
-  warn(msg: string, ...args: any[]): void;
-  warn(obj: unknown, msg?: string, ...args: any[]): void;
+  warn(msg: string, ...args: any[]): void
+  warn(obj: unknown, msg?: string, ...args: any[]): void
   warn(...args: Parameters<LoggerFn>) {
-    this.call('warn', ...args);
+    this.call('warn', ...args)
   }
 
-  error(msg: string, ...args: any[]): void;
-  error(obj: unknown, msg?: string, ...args: any[]): void;
+  error(msg: string, ...args: any[]): void
+  error(obj: unknown, msg?: string, ...args: any[]): void
   error(...args: Parameters<LoggerFn>) {
-    this.call('error', ...args);
+    this.call('error', ...args)
   }
 
-  fatal(msg: string, ...args: any[]): void;
-  fatal(obj: unknown, msg?: string, ...args: any[]): void;
+  fatal(msg: string, ...args: any[]): void
+  fatal(obj: unknown, msg?: string, ...args: any[]): void
   fatal(...args: Parameters<LoggerFn>) {
-    this.call('fatal', ...args);
+    this.call('fatal', ...args)
   }
 
   setContext(value: string) {
-    this.context = value;
+    this.context = value
   }
 
   assign(fields: pino.Bindings) {
-    const store = storage.getStore();
+    const store = storage.getStore()
     if (!store) {
       throw new Error(
         `${PinoLogger.name}: unable to assign extra fields out of request scope`,
-      );
+      )
     }
-    store.logger = store.logger.child(fields);
-    store.responseLogger?.setBindings(fields);
+    store.logger = store.logger.child(fields)
+    store.responseLogger?.setBindings(fields)
   }
 
   protected call(method: pino.Level, ...args: Parameters<LoggerFn>) {
@@ -170,13 +170,13 @@ export class PinoLogger implements PinoMethods {
               { [this.errorKey]: firstArg }
             ),
             ...args.slice(1),
-          ];
+          ]
         } else {
           // Add context to the existing object
           newArgs = [
             Object.assign({ [this.contextName]: this.context }, firstArg),
             ...args.slice(1),
-          ];
+          ]
         }
       }
     } 
@@ -195,5 +195,5 @@ export class PinoLogger implements PinoMethods {
 function isFirstArgObject(
   args: Parameters<LoggerFn>,
 ): args is [obj: object, msg?: string, ...args: any[]] {
-  return typeof args[0] === 'object';
+  return typeof args[0] === 'object'
 }

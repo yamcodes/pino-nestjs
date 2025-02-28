@@ -1,29 +1,29 @@
-import { Controller, Get, Inject, Injectable } from '@nestjs/common';
+import { Controller, Get, Inject, Injectable } from '@nestjs/common'
 
-import { Logger, Params, PARAMS_PROVIDER_TOKEN, PinoLogger } from '../src';
+import { Logger, PARAMS_PROVIDER_TOKEN, Params, PinoLogger } from '../src'
 
-import { platforms } from './utils/platforms';
-import { TestCase } from './utils/test-case';
+import { platforms } from './utils/platforms'
+import { TestCase } from './utils/test-case'
 
 describe('extending', () => {
   for (const PlatformAdapter of platforms) {
     describe(PlatformAdapter.name, () => {
       it('should work properly with an extended logger service', async () => {
-        const msg = Math.random().toString();
+        const msg = Math.random().toString()
 
         @Injectable()
         class LoggerService extends Logger {
-          private readonly message: string;
+          private readonly message: string
           constructor(
             logger: PinoLogger,
             @Inject(PARAMS_PROVIDER_TOKEN) params: Params,
           ) {
-            super(logger, params);
-            this.message = msg;
+            super(logger, params)
+            this.message = msg
           }
 
           log() {
-            this.logger.info(this.message);
+            this.logger.info(this.message)
           }
         }
 
@@ -32,8 +32,8 @@ describe('extending', () => {
           constructor(private readonly logger: LoggerService) {}
           @Get('/')
           get() {
-            this.logger.log();
-            return {};
+            this.logger.log()
+            return {}
           }
         }
 
@@ -43,24 +43,24 @@ describe('extending', () => {
           controllers: [TestController],
         })
           .forRoot()
-          .run();
+          .run()
 
-        expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-      });
+        expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+      })
 
       it('should work properly with an extended PinoLogger service', async () => {
-        const msg = Math.random().toString();
+        const msg = Math.random().toString()
 
         @Injectable()
         class LoggerService extends PinoLogger {
-          private readonly message: string;
+          private readonly message: string
           constructor(@Inject(PARAMS_PROVIDER_TOKEN) params: Params) {
-            super(params);
-            this.message = msg;
+            super(params)
+            this.message = msg
           }
 
           log() {
-            this.info(this.message);
+            this.info(this.message)
           }
         }
 
@@ -69,8 +69,8 @@ describe('extending', () => {
           constructor(private readonly logger: LoggerService) {}
           @Get('/')
           get() {
-            this.logger.log();
-            return {};
+            this.logger.log()
+            return {}
           }
         }
 
@@ -80,10 +80,10 @@ describe('extending', () => {
           controllers: [TestController],
         })
           .forRoot()
-          .run();
+          .run()
 
-        expect(logs.some((v) => v.msg === msg)).toBeTruthy();
-      });
-    });
+        expect(logs.some((v) => v.msg === msg)).toBeTruthy()
+      })
+    })
   }
-});
+})
