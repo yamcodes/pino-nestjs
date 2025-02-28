@@ -54,16 +54,22 @@ export class Logger implements LoggerService {
     if (typeof message === 'object') {
       if (message instanceof Error) {
         objArg.err = message;
+        // NestJS style: Error message first, then context and other params
+        this.logger[level](message.message || 'Error', objArg, ...params);
       } else {
-        Object.assign(objArg, message);
+        // For non-Error objects, follow NestJS pattern - message first, then context
+        // Store original message object properties in a new variable
+        const msgObj = { ...message };
+        // Pass message object first, then context object with proper context
+        this.logger[level](msgObj, objArg, ...params);
       }
-      this.logger[level](objArg, ...params);
     } else if (this.isWrongExceptionsHandlerContract(level, message, params)) {
       objArg.err = new Error(message);
       objArg.err.stack = params[0];
       this.logger[level](objArg);
     } else {
-      this.logger[level](objArg, message, ...params);
+      // NestJS style: message first, then context
+      this.logger[level](message, objArg, ...params);
     }
   }
 
