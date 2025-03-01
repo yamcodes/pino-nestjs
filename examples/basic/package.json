@@ -1,8 +1,8 @@
 {
   "name": "basic",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Basic example of pino-nestjs",
+  "author": "Yam Borodetsky",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -15,9 +15,9 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "pino-nestjs": "workspace:*",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1",
-    "pino-nestjs": "workspace:*"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

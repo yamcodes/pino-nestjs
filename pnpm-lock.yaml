@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      radashi:
+        specifier: ^12.3.4
+        version: 12.3.4
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -2570,6 +2574,10 @@ packages:
 
   quick-format-unescaped@4.0.4:
     resolution: {integrity: sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==}
+
+  radashi@12.3.4:
+    resolution: {integrity: sha512-EC+EhNBJItMLo/D3GR87raHf7W1hkbHUT7Y3Y7/3O+cwMOulRfuZ3g+EU0KT9eikaj8vwLA4ia+bdaXkBGuT4Q==}
+    engines: {node: '>=16.0.0'}
 
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
@@ -6218,6 +6226,8 @@ snapshots:
   queue-microtask@1.2.3: {}
 
   quick-format-unescaped@4.0.4: {}
+
+  radashi@12.3.4: {}
 
   randombytes@2.1.0:
     dependencies:

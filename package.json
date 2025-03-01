@@ -81,5 +81,8 @@
       "@biomejs/biome",
       "@nestjs/core"
     ]
+  },
+  "dependencies": {
+    "radashi": "^12.3.4"
   }
 }
