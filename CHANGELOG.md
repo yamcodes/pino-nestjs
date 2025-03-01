@@ -1,5 +1,13 @@
 # pino-nestjs
 
+## 0.1.3
+
+### Patch Changes
+
+- Fix parameter order _[`5a7dbcd`](https://github.com/yamcodes/pino-nestjs/commit/5a7dbcd9b18b524e13339bb9c1f02c46d329fe52) [@yamcodes](https://github.com/yamcodes)_
+
+  Fix an issue where the parameter order was incorrect, resulting in missing context.
+
 ## 0.1.2
 
 ### Patch Changes
