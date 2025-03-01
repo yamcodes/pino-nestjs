@@ -43,17 +43,44 @@ this.logger.log('message', context); // ✅ message first, context second
 
 ## Installation
 
+<details open>
+<summary>npm</summary>
+
 ```sh
-npm i pino-nestjs pino-http
+npm install pino-nestjs pino-http
 ```
+</details>
+
+<details>
+<summary>pnpm</summary>
+
+```sh
+pnpm add pino-nestjs pino-http
+```
+</details>
+
+<details>
+<summary>Yarn</summary>
+
+```sh
+yarn add pino-nestjs pino-http
+```
+</details>
+
+<details>
+<summary>Bun</summary>
+
+```sh
+bun add pino-nestjs pino-http
+```
+</details>
 
 ## Usage
 
 ### Import the module
 
-Import `LoggerModule` in your root module:
-
 ```ts
+// app.module.ts
 import { LoggerModule } from 'pino-nestjs';
 
 @Module({
@@ -65,6 +92,7 @@ class AppModule {}
 ### Set up app logger
 
 ```ts
+// main.ts
 import { Logger } from 'pino-nestjs';
 
 const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -76,6 +104,8 @@ app.useLogger(app.get(Logger));
 #### Option 1: NestJS standard logger (recommended)
 
 ```ts
+// my.service.ts
+
 // NestJS standard built-in logger.
 // Logs will be produced by pino internally
 import { Logger } from '@nestjs/common';
@@ -106,6 +136,7 @@ export class MyService {
 #### Option 2: Direct Pino Logger
 
 ```ts
+// my.service.ts
 import { PinoLogger, InjectPinoLogger } from 'pino-nestjs';
 
 export class MyService {
@@ -194,6 +225,7 @@ Unlike nestjs-pino which follows Pino's convention (context first, then message)
 ### Zero configuration
 
 ```ts
+// my.module.ts
 import { LoggerModule } from 'pino-nestjs';
 
 @Module({
@@ -247,6 +279,7 @@ interface Params {
 ### Synchronous configuration
 
 ```ts
+// my.module.ts
 import { LoggerModule } from 'pino-nestjs';
 
 @Module({
@@ -278,6 +311,7 @@ class MyModule {}
 ### Asynchronous configuration
 
 ```ts
+// my.module.ts
 import { LoggerModule } from 'pino-nestjs';
 
 @Injectable()
@@ -316,6 +350,7 @@ class TestModule {}
 Read the [pino asynchronous mode docs](https://github.com/pinojs/pino/blob/master/docs/asynchronous.md) first.
 
 ```ts
+// my.module.ts
 import pino from 'pino';
 import { LoggerModule } from 'pino-nestjs';
 
@@ -343,6 +378,7 @@ See [pino.destination](https://github.com/pinojs/pino/blob/master/docs/api.md#pi
 The package exposes a `getLoggerToken()` function that returns an injection token based on the provided context:
 
 ```ts
+// my.service.spec.ts
 const module: TestingModule = await Test.createTestingModule({
   providers: [
     MyService,
@@ -356,7 +392,7 @@ const module: TestingModule = await Test.createTestingModule({
 
 ## Extending `Logger` and `PinoLogger`
 
-Both classes can be extended:
+### Extending `Logger`
 
 ```ts
 // logger.service.ts
@@ -374,8 +410,12 @@ class LoggerService extends Logger {
   // Extended method
   myMethod(): any {}
 }
+```
 
-// Alternative: Extend PinoLogger
+### Extending `PinoLogger`
+
+```ts
+// logger.service.ts
 @Injectable()
 class LoggerService extends PinoLogger {
   constructor(
@@ -387,7 +427,9 @@ class LoggerService extends PinoLogger {
   // Extended method
   myMethod(): any {}
 }
+```
 
+```ts
 // logger.module.ts
 @Module({
   providers: [LoggerService],
@@ -443,6 +485,7 @@ For all other scenarios, using `useExisting: true` will lead to either code dupl
 You can enrich logs using the `assign` method of `PinoLogger`:
 
 ```ts
+// my.controller.ts
 @Controller('/')
 class TestController {
   constructor(
@@ -457,7 +500,10 @@ class TestController {
     return this.service.test();
   }
 }
+```
 
+```ts
+// my.service.ts
 @Injectable()
 class MyService {
   private readonly logger = new Logger(MyService.name);
@@ -476,8 +522,9 @@ Set the `assignResponse` parameter to `true` to also enrich request completion l
 You can modify pino root logger parameters at runtime:
 
 ```ts
+// my.controller.ts
 @Controller('/')
-class TestController {
+class MyController {
   @Post('/change-logging-level')
   setLevel() {
     PinoLogger.root.level = 'info';
@@ -531,3 +578,7 @@ app.useGlobalInterceptors(new LoggerErrorInterceptor());
 #### Q: I use Fastify and want to configure pino at the Adapter level. Can I use that config for the logger?
 
 **A**: You can use `useExisting: true`, but there are [caveats](#reuse-the-fastify-logger-configuration).
+
+## Thanks / Inspiration
+
+- [nestjs-pino](https://github.com/iamolegga/nestjs-pino) by [iamolegga](https://github.com/iamolegga) makes up the bulk of the codebase. To support the author, please donate to [Armed Forces of Ukraine](https://war.ukraine.ua/donate/) or [The Come Back Alive foundation](https://comebackalive.in.ua/).
