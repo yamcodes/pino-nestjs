@@ -1,11 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "//#build:root": {
+    "build": {
       "outputs": ["dist/**"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+    "typecheck": {
+      "inputs": ["src/**/*.ts"]
     },
     "dev": {
       "persistent": true,
