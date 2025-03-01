@@ -39,4 +39,5 @@ A similar output to the following is expected:
 {"level":30,"time":1740859837469,"pid":32422,"hostname":"MacBook-Pro.local","context":"RouterExplorer","msg":"Mapped {/, GET} route"}
 {"level":30,"time":1740859837469,"pid":32422,"hostname":"MacBook-Pro.local","context":"NestApplication","msg":"Nest application successfully started"}
 {"level":30,"time":1740859890553,"pid":32422,"hostname":"MacBook-Pro.local","reqId":1,"context":"AppService","foo":"bar","msg":"Hello World!"}
+{"level":30,"time":1740861413156,"pid":52372,"hostname":"MacBook-Pro.local","req":{"id":1,"method":"GET","url":"/","query":{},...},"res":{"statusCode":200,...},"responseTime":6,"msg":"request completed"}
 ```
