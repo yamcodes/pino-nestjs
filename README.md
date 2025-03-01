@@ -26,7 +26,7 @@ this.logger.log('message', context); // ✅ message first, context second
 - [Usage](#usage)
   - [Import the module](#import-the-module)
   - [Set up app logger](#set-up-app-logger)
-  - [Using the logger](#using-the-logger)
+  - [Use the logger](#use-the-logger)
 - [Zero config](#zero-config)
 - [Configuration](#configuration)
   - [Configuration parameters](#configuration-parameters)
@@ -34,7 +34,7 @@ this.logger.log('message', context); // ✅ message first, context second
   - [Asynchronous configuration](#asynchronous-configuration)
   - [Asynchronous logging](#asynchronous-logging)
 - [Advanced](#advanced)
-  - [Direct Pino Logger usage](#direct-pino-logger-usage)
+  - [Using `PinoLogger` directly](#using-pinologger-directly)
     - [Testing a class that uses `@InjectPinoLogger`](#testing-a-class-that-uses-injectpinologger)
   - [Extending `Logger` and `PinoLogger`](#extending-logger-and-pinologger)
   - [Reusing the Fastify logger configuration](#reusing-the-fastify-logger-configuration)
@@ -310,7 +310,7 @@ See [pino.destination](https://github.com/pinojs/pino/blob/master/docs/api.md#pi
 
 ## Advanced
 
-### Direct Pino Logger usage
+### Using `PinoLogger` directly
 
 While the recommended approach is to use the standard NestJS logger, you can also use Pino's native logging format directly through the `PinoLogger` class. This gives you access to Pino's full feature set and might be preferred by developers already familiar with Pino.
 
