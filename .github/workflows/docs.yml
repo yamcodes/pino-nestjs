@@ -26,37 +26,60 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      - uses: tool3/docsify-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Upload artifact
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: docs
-      # manually
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install docsify
-        run: npm install -g docsify-cli
-      - name: Build docs
-        run: docsify init ./docs
-      - name: Upload docs
-        uses: actions/upload-artifact@v4
+      - name: Create docs directory
+        run: mkdir -p docs
+      - name: Copy README to docs
+        run: cp README.md docs/
+      - name: Create index.html
+        run: |
+          cat > docs/index.html << 'EOL'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <meta charset="UTF-8">
+            <title>Pino NestJS</title>
+            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css">
+          </head>
+          <body>
+            <div id="app"></div>
+            <script>
+              window.$docsify = {
+                name: 'Pino NestJS',
+                repo: 'https://github.com/yamcodes/pino-nestjs',
+                coverpage: false,
+                loadSidebar: false
+              }
+            </script>
+            <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+          </body>
+          </html>
+          EOL
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
           path: docs
 
-  # Deployment job
   deploy:
-    environment:
-      name: GitHub Pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # Add a dependency to the build job
     needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
     runs-on: ubuntu-latest
-    name: Deploy
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+
