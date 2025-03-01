@@ -1,4 +1,6 @@
-All pull requests that respect next rules are welcome:
+Thank you for considering a contribution to this project!
 
-- Before opening pull request to this repo run `npm t` to run tests.
-- All bugfixes and features should contain tests and coverage must be 100%
+All pull requests that follow these rules are welcome:
+
+- Before opening a pull request to this repo, run `pnpm test` to verify that all tests pass.
+- All bugfixes and features should contain tests, and coverage must be 100%.
