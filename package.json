@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --verbose -i --detectOpenHandles --forceExit",
-    "lint": "tsc --noemit && eslint \"{src,__tests__}/**/*.ts\" --fix",
     "build": "turbo run build:root",
     "build:root": "rimraf dist && tsc -p tsconfig.build.json",
     "release": "pnpm run build && changeset publish",

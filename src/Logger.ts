@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Inject, Injectable, LoggerService } from '@nestjs/common'
 import pino, { Level } from 'pino'
 import { isObject, last } from 'radashi'
@@ -63,11 +62,23 @@ export class Logger implements LoggerService {
     this.call('fatal', message, ...optionalParams)
   }
 
+  /**
+   * Central logging method that handles different message formats with guard clauses
+   *
+   * Processing flow:
+   * 1. Extract context from the last parameter if available
+   * 2. Process optional parameters and determine what should be merged vs interpolated
+   * 3. Handle different message types with guard clauses:
+   *    - Error objects
+   *    - Exception handler special cases
+   *    - Non-Error objects
+   *    - String/primitive messages
+   */
   private call(level: Level, message: unknown, ...optionalParams: unknown[]) {
+    // Object to hold context and other metadata
     const mergingObject: Record<string, unknown> = {}
 
-    // optionalParams contains extra params passed to logger
-    // context name is the last item
+    // Extract context (last parameter) if available
     let optionalParamsWithoutContext: unknown[] = []
     const contextOrUndefined = last(optionalParams)
     if (contextOrUndefined !== undefined) {
@@ -76,22 +87,22 @@ export class Logger implements LoggerService {
       optionalParamsWithoutContext = optionalParams.slice(0, -1)
     }
 
+    // Determine which values should be used for interpolation vs merging
     let interpolationValues: unknown[] = []
-    // Merge a manual mergingObject, if provided. If it is, it's the last param.
     const maybeMergingObject = last(optionalParamsWithoutContext)
     if (
       isObject(maybeMergingObject) &&
       !isInterpolated(message, optionalParamsWithoutContext.length - 1)
     ) {
-      // in this case maybeMergingObject is the mergingObject, remove it from the array
+      // If last parameter is an object and not needed for interpolation, merge it
       interpolationValues = optionalParamsWithoutContext.slice(0, -1)
-      // TODO: should we allow overriding the context?
       Object.assign(mergingObject, maybeMergingObject)
     } else {
+      // Otherwise use all parameters for interpolation
       interpolationValues = optionalParamsWithoutContext
     }
 
-    // Handle Error objects
+    // GUARD CLAUSE 1: Handle Error objects
     if (message instanceof Error) {
       mergingObject.err = message
       this.logger[level](
@@ -102,7 +113,7 @@ export class Logger implements LoggerService {
       return
     }
 
-    // Handle special case with exceptions handler
+    // GUARD CLAUSE 2: Handle special case with exceptions handler
     if (
       this.isWrongExceptionsHandlerContract(
         level,
@@ -117,7 +128,7 @@ export class Logger implements LoggerService {
       return
     }
 
-    // Handle non-Error objects
+    // GUARD CLAUSE 3: Handle non-Error objects
     if (typeof message === 'object') {
       this.logger[level](
         { ...mergingObject, ...message },
@@ -127,11 +138,12 @@ export class Logger implements LoggerService {
       return
     }
 
+    // DEFAULT CASE: Handle string/primitive messages
     this.logger[level](mergingObject, String(message), ...interpolationValues)
   }
 
   /**
-   * Unfortunately built-in (not ont = { ...objArg, ...params }ly) `^.*Exception(s?)Handler$` classes call `.error`
+   * Unfortunately built-in (not only) `^.*Exception(s?)Handler$` classes call `.error`
    * method with not supported contract:
    *
    * - ExceptionsHandler

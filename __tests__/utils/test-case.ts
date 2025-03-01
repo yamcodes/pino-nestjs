@@ -1,6 +1,5 @@
 import { Module, ModuleMetadata, Type } from '@nestjs/common'
 import { AbstractHttpAdapter, NestFactory } from '@nestjs/core'
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 import MemoryStream = require('memorystream')
 import pino from 'pino'
 import { Options } from 'pino-http'

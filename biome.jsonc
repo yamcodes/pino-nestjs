@@ -56,8 +56,7 @@
         "useGetterReturn": "off",
         "useNamespaceKeyword": "error"
       }
-    },
-    "ignore": ["eslint.config.cjs"]
+    }
   },
   "javascript": {
     "formatter": {

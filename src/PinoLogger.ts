@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Inject, Injectable, Scope } from '@nestjs/common'
 import pino from 'pino'
 
@@ -31,7 +30,6 @@ let outOfContext: pino.Logger | undefined
 
 export function __resetOutOfContextForTests() {
   outOfContext = undefined
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore reset root for tests only
   PinoLogger.root = undefined
 }
@@ -158,7 +156,6 @@ export class PinoLogger implements PinoMethods {
         args = [{ [this.contextName]: this.context }, ...args]
       }
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore args are union of tuple types
     this.logger[method](...args)
   }
