@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - README.md
+      - .github/workflows/docs.yml
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -23,6 +24,20 @@ jobs:
         run: mkdir -p docs
       - name: Copy README to docs
         run: cp README.md docs/
+      - name: Create cover page
+        run: |
+          cat > docs/_coverpage.md << 'EOL'
+          # 🌲🐱 Pino NestJS
+
+          > Pino logger integration for NestJS applications
+
+          - Simple and lightweight
+          - High-performance logging
+          - Easy integration with NestJS
+
+          [GitHub](https://github.com/yamcodes/pino-nestjs)
+          [Get Started](#main)
+          EOL
       - name: Create index.html
         run: |
           cat > docs/index.html << 'EOL'
@@ -51,9 +66,9 @@ jobs:
              <script>
                // Docsify Configuration
                window.$docsify = {
-                 name: 'Pino NestJS',
+                 name: '🌲🐱 pino-nestjs',
                  repo: 'https://github.com/yamcodes/pino-nestjs',
-                 coverpage: false,
+                 coverpage: true,
                  loadSidebar: false
                };
              </script>
