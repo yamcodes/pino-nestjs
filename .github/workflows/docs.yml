@@ -79,7 +79,13 @@ jobs:
                  name: '🌲 pino-nestjs 🐱',
                  repo: 'https://github.com/yamcodes/pino-nestjs',
                  coverpage: true,
-                 loadSidebar: false
+                 loadSidebar: false,
+                 markdown: {
+                   highlight: function (code, lang) {
+                     // This empty function enables Shiki to take over highlighting
+                     return code;
+                   }
+                 }
                };
              </script>
 
@@ -90,6 +96,43 @@ jobs:
              <!-- Recommended -->
              <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
              <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+             
+             <!-- Syntax Highlighting with Shiki -->
+             <script src="https://cdn.jsdelivr.net/npm/shiki"></script>
+             <script>
+               // Initialize Shiki after Docsify loads
+               window.$docsify.plugins = [
+                 ...window.$docsify.plugins || [],
+                 function(hook, vm) {
+                   hook.ready(function() {
+                     shiki
+                       .getHighlighter({
+                         theme: 'dark-plus', // Using VS Code's dark theme
+                         langs: ['typescript', 'javascript', 'bash', 'json']
+                       })
+                       .then(highlighter => {
+                         hook.afterEach(function(html, next) {
+                           // Replace code blocks with Shiki highlighted code
+                           html = html.replace(/<pre data-lang="(.*?)">([\s\S]*?)<\/pre>/g, function(match, lang, code) {
+                             try {
+                               // Try to highlight with the specified language
+                               const highlightedCode = highlighter.codeToHtml(
+                                 code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'),
+                                 { lang }
+                               );
+                               return highlightedCode;
+                             } catch (error) {
+                               // Fallback to plaintext
+                               return `<pre>${code}</pre>`;
+                             }
+                           });
+                           next(html);
+                         });
+                       });
+                   });
+                 }
+               ];
+             </script>
           </body>
           </html>
           EOL
