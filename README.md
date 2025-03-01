@@ -171,7 +171,7 @@ Your logs will now be 🌲 Pino logs with request `context` and `req.id`:
 * **Follows [NestJS best practices](https://docs.nestjs.com/techniques/logger#logger) out of the box**
 * [**Respects NestJS parameter order**](#respecting-nestjs-parameter-order)
 * [**Zero config**](#2-import-loggermodule-in-your-appmodule) quickstart cost but still [highly configurable](#configuration) when needed
-* [Classic Pino mode](#using-pinologger-directly) for users who prefer **Pino's native logging format**
+* [Classic Pino mode](#using-pinologger-directly) for those preferring **Pino's native logging format**
 
 ## Comparison with other NestJS loggers
 
