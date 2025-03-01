@@ -7,9 +7,9 @@ assignees: yamcodes
 
 ---
 
-<!-- Please don't delete this template or we'll close your issue -->
+<!-- Please don't delete this template -->
 
-<!-- Before creating an issue please make sure you are using the latest version. -->
+<!-- Please make sure you are using the latest version of pino-nestjs -->
 
 - [ ] I've read [the docs of pino-nestjs](https://github.com/yamcodes/pino-nestjs/blob/master/README.md)
 - [ ] I've read [the docs of pino](https://getpino.io/#/) and [pino-http](https://github.com/pinojs/pino-http)
