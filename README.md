@@ -22,12 +22,12 @@ this.logger.log('message', context); // ✅ message first, context second
 
 ## Table of contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Import the module](#import-the-module)
-  - [Set up app logger](#set-up-app-logger)
-  - [Use the logger](#use-the-logger)
-  - [Observe logs](#observe-logs)
+- [Quickstart](#quickstart)
+  - [Install `pino-nestjs`](#1-install-pino-nestjs)
+  - [Import `LoggerModule`](#2-import-loggermodule-in-your-appmodule)
+  - [Use app logger in `main.ts`](#3-use-app-logger-in-maints)
+  - [Use `Logger` in your NestJS codebase](#4-use-logger-in-your-nestjs-codebase)
+  - [Observe the logs](#5-observe-the-logs)
 - [Highlights](#highlights)
 - [Comparison with other NestJS loggers](#comparison-with-other-nestjs-loggers)
 - [Respecting NestJS parameter order](#respecting-nestjs-parameter-order)
@@ -83,7 +83,6 @@ yarn add pino-nestjs pino-http
 bun add pino-nestjs pino-http
 ```
 </details>
-
 
 ### 2. Import `LoggerModule` in your `AppModule`
 
