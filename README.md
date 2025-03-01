@@ -22,12 +22,13 @@ this.logger.log('message', context); // ✅ message first, context second
 
 ## Table of contents
 
+- [Table of contents](#table-of-contents)
 - [Quickstart](#quickstart)
-  - [Install `pino-nestjs`](#1-install-pino-nestjs)
-  - [Import `LoggerModule`](#2-import-loggermodule-in-your-appmodule)
-  - [Use app logger in `main.ts`](#3-use-app-logger-in-maints)
-  - [Use `Logger` in your NestJS codebase](#4-use-logger-in-your-nestjs-codebase)
-  - [Observe the logs](#5-observe-the-logs)
+  - [1. Install `pino-nestjs`](#1-install-pino-nestjs)
+  - [2. Import `LoggerModule` in your `AppModule`](#2-import-loggermodule-in-your-appmodule)
+  - [3. Use app logger in `main.ts`](#3-use-app-logger-in-maints)
+  - [4. Use `Logger` in your NestJS codebase](#4-use-logger-in-your-nestjs-codebase)
+  - [5. Observe the logs](#5-observe-the-logs)
 - [Highlights](#highlights)
 - [Comparison with other NestJS loggers](#comparison-with-other-nestjs-loggers)
 - [Respecting NestJS parameter order](#respecting-nestjs-parameter-order)
@@ -41,10 +42,17 @@ this.logger.log('message', context); // ✅ message first, context second
     - [Testing a class that uses `@InjectPinoLogger`](#testing-a-class-that-uses-injectpinologger)
   - [Extending `Logger` and `PinoLogger`](#extending-logger-and-pinologger)
   - [Reusing the Fastify logger configuration](#reusing-the-fastify-logger-configuration)
-  - [Assigning extra fields](#assigning-extra-fields-for-future-calls)
+  - [Assigning extra fields for future calls](#assigning-extra-fields-for-future-calls)
   - [Changing Pino parameters at runtime](#changing-pino-parameters-at-runtime)
-  - [Exposing stack trace](#exposing-stack-trace-and-error-class-in-err-property)
+  - [Exposing stack trace and error class in `err` property](#exposing-stack-trace-and-error-class-in-err-property)
 - [Frequently asked questions](#frequently-asked-questions)
+    - [Q: How do I disable automatic request/response logs?](#q-how-do-i-disable-automatic-requestresponse-logs)
+    - [Q: How do I pass `X-Request-ID` header or generate UUID for `req.id`?](#q-how-do-i-pass-x-request-id-header-or-generate-uuid-for-reqid)
+    - [Q: How does it work?](#q-how-does-it-work)
+    - [Q: Why use AsyncLocalStorage instead of REQUEST scope?](#q-why-use-asynclocalstorage-instead-of-request-scope)
+    - [Q: What about `pino` built-in methods/levels?](#q-what-about-pino-built-in-methodslevels)
+    - [Q: I use Fastify and want to configure pino at the Adapter level. Can I use that config for the logger?](#q-i-use-fastify-and-want-to-configure-pino-at-the-adapter-level-can-i-use-that-config-for-the-logger)
+- [Thanks / Inspiration](#thanks--inspiration)
 
 ## Quickstart
 
@@ -160,7 +168,7 @@ Your logs will now be 🌲 Pino logs with request `context` and `req.id`:
 
 * **JSON logs, structured logging, high performance** (via [pino](https://getpino.io/))
 * [**Automatic request/response logging**](#5-observe-the-logs) (via [pino-http](https://github.com/pinojs/pino-http))
-* [**Follows NestJS best practices**](https://docs.nestjs.com/techniques/logger#logger)
+* [**Follows NestJS best practices out of the box**](https://docs.nestjs.com/techniques/logger#logger)
 * [**Respects NestJS parameter order**](#respecting-nestjs-parameter-order)
 * [**Zero config**](#2-import-loggermodule-in-your-appmodule) quickstart cost but still [highly configurable](#configuration) when needed
 * [**Classic Pino mode**](#using-pinologger-directly) for users who prefer Pino's native logging format
