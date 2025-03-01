@@ -564,7 +564,7 @@ app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
 #### Q: I use Fastify and want to configure pino at the Adapter level. Can I use that config for the logger?
 
-**A**: You can use `useExisting: true`, but there are [caveats](#reuse-the-fastify-logger-configuration).
+**A**: You can use `useExisting: true`, but there are [caveats](#reusing-the-fastify-logger-configuration). For most use cases, this is not recommended.
 
 ## Thanks / Inspiration
 
