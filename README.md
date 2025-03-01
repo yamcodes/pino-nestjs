@@ -27,13 +27,14 @@ this.logger.log('message', context); // ✅ message first, context second
   - [Import the module](#import-the-module)
   - [Set up app logger](#set-up-app-logger)
   - [Use the logger](#use-the-logger)
+  - [Observe logs](#observe-logs)
 - [Zero config](#zero-config)
-- [Configuration](#configuration)
-  - [Configuration parameters](#configuration-parameters)
-  - [Synchronous configuration](#synchronous-configuration)
-  - [Asynchronous configuration](#asynchronous-configuration)
-  - [Asynchronous logging](#asynchronous-logging)
 - [Advanced](#advanced)
+  - [Configuration](#configuration)
+    - [Configuration parameters](#configuration-parameters)
+    - [Synchronous configuration](#synchronous-configuration)
+    - [Asynchronous configuration](#asynchronous-configuration)
+    - [Asynchronous logging](#asynchronous-logging)
   - [Using `PinoLogger` directly](#using-pinologger-directly)
     - [Testing a class that uses `@InjectPinoLogger`](#testing-a-class-that-uses-injectpinologger)
   - [Extending `Logger` and `PinoLogger`](#extending-logger-and-pinologger)
@@ -166,11 +167,13 @@ import { LoggerModule } from 'pino-nestjs';
 class MyModule {}
 ```
 
-However, if you do need to configure the logger, read on.
+If you do need to configure the logger, read the [Configuration](#configuration) section.
 
-## Configuration 
+## Advanced
 
-### Configuration parameters
+### Configuration 
+
+#### Configuration parameters
 
 ```ts
 interface Params {
@@ -211,7 +214,7 @@ interface Params {
 }
 ```
 
-### Synchronous configuration
+#### Synchronous configuration
 
 ```ts
 // my.module.ts
@@ -243,7 +246,7 @@ import { LoggerModule } from 'pino-nestjs';
 class MyModule {}
 ```
 
-### Asynchronous configuration
+#### Asynchronous configuration
 
 ```ts
 // my.module.ts
@@ -278,7 +281,7 @@ class ConfigModule {}
 class TestModule {}
 ```
 
-### Asynchronous logging
+#### Asynchronous logging
 
 > Asynchronous logging enables even faster performance by pino but risks losing the most recently buffered logs in case of system failure.
 
@@ -307,8 +310,6 @@ class MyModule {}
 ```
 
 See [pino.destination](https://github.com/pinojs/pino/blob/master/docs/api.md#pino-destination)
-
-## Advanced
 
 ### Using `PinoLogger` directly
 
