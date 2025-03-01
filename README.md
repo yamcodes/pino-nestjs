@@ -28,7 +28,9 @@ this.logger.log('message', context); // ✅ message first, context second
   - [Set up app logger](#set-up-app-logger)
   - [Use the logger](#use-the-logger)
   - [Observe logs](#observe-logs)
-- [Zero config](#zero-config)
+- [Highlights](#highlights)
+- [Comparison with other NestJS loggers](#comparison-with-other-nestjs-loggers)
+- [Respecting NestJS parameter order](#respecting-nestjs-parameter-order)
 - [Advanced](#advanced)
   - [Configuration](#configuration)
     - [Configuration parameters](#configuration-parameters)
@@ -44,7 +46,11 @@ this.logger.log('message', context); // ✅ message first, context second
   - [Exposing stack trace](#exposing-stack-trace-and-error-class-in-err-property)
 - [Frequently asked questions](#frequently-asked-questions)
 
-## Installation
+## Quickstart
+
+Let's quickly set up `pino-nestjs` in your NestJS app according to [NestJS Logger best practices](https://docs.nestjs.com/techniques/logger#logger):
+
+### 1. Install `pino-nestjs`
 
 <details open>
 <summary>npm</summary>
@@ -78,9 +84,8 @@ bun add pino-nestjs pino-http
 ```
 </details>
 
-## Usage
 
-### Import the module
+### 2. Import `LoggerModule` in your `AppModule`
 
 ```ts
 // app.module.ts
@@ -92,7 +97,7 @@ import { LoggerModule } from 'pino-nestjs';
 class AppModule {}
 ```
 
-### Set up app logger
+### 3. Use app logger in `main.ts`
 
 ```ts
 // main.ts
@@ -102,7 +107,7 @@ const app = await NestFactory.create(AppModule, { bufferLogs: true });
 app.useLogger(app.get(Logger));
 ```
 
-### Use the logger
+### 4. Use `Logger` in your NestJS codebase
 
 ```ts
 // my.service.ts
@@ -130,9 +135,9 @@ export class MyService {
 }
 ```
 
-### Observe logs
+### 5. Observe the logs
 
-Example output:
+Your logs will now be 🌲 Pino logs with request `context` and `req.id`:
 
 ```json
 // App logs
@@ -152,22 +157,42 @@ Example output:
 {"level":30,"time":1629823792029,"pid":15067,"hostname":"my-host","req":{"id":1,"method":"GET","url":"/","query":{},"params":{"0":""},"headers":{"host":"localhost:3000","user-agent":"curl/7.64.1","accept":"*/*"},"remoteAddress":"::1","remotePort":63822},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"12","etag":"W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\""}},"responseTime":7,"msg":"request completed"}
 ```
 
-## Zero config
+## Highlights
 
-This package is designed to work with 0 configuration. Just import the module into your root module:
+* **JSON logs, structured logging, high performance** (via [pino](https://getpino.io/))
+* [**Automatic request/response logging**](#5-observe-the-logs) (via [pino-http](https://github.com/pinojs/pino-http))
+* [**Follows NestJS best practices**](https://docs.nestjs.com/techniques/logger#logger)
+* [**Respects NestJS parameter order**](#respecting-nestjs-parameter-order)
+* [**Zero config**](#2-import-loggermodule-in-your-appmodule) quickstart cost but still [highly configurable](#configuration) when needed
+* [**Classic Pino mode**](#using-pinologger-directly) for users who prefer Pino's native logging format
+
+## Comparison with other NestJS loggers
+
+> [!NOTE]
+> This is a fork of [nestjs-pino](https://github.com/iamolegga/nestjs-pino) that implements **full compatibility with NestJS's default logger** by [respecting the parameter order](#respecting-nestjs-parameter-order).
+>
+> To understand the motivation, see [nestjs-pino#2004](https://github.com/iamolegga/nestjs-pino/issues/2004).
+
+| Logger | Nest App Logger | Logger Service | Auto-bind Request Data | [NestJS Parameter Order](#respecting-nestjs-parameter-order) | Active Maintenance |
+|--------|:--------------:|:--------------:|:----------------------:|:----------------------:|:----------------------:|
+| [nest-winston](https://github.com/gremo/nest-winston) | ✅ | ✅ | ❌ | ✅ | ✅ |
+| [nestjs-pino-logger](https://github.com/jtmthf/nestjs-pino-logger) | ✅ | ✅ | ❌ | ❓ | ❌ |
+| [nestjs-pino](https://github.com/iamolegga/nestjs-pino) | ✅ | ✅ | ✅ | ❌ | ✅ |
+| [**pino-nestjs**](https://github.com/yamcodes/pino-nestjs) (you're here!) | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+## Respecting NestJS parameter order
+
+This library differs from some other NestJS loggers by respecting the parameter order of the NestJS logger.
 
 ```ts
-// app.module.ts
-import { LoggerModule } from 'pino-nestjs';
+// Other loggers - violate NestJS parameter order
+this.logger.log(context, 'message'); // ❌ context first, message second
 
-@Module({
-  imports: [LoggerModule.forRoot()],
-  // ...
-})
-class MyModule {}
+// With pino-nestjs - respect NestJS parameter order
+this.logger.log('message', context); // ✅ message first, context second
 ```
 
-If you do need to configure the logger, read the [Configuration](#configuration) section.
+This makes it a **drop-in replacement** for the default NestJS logger.
 
 ## Advanced
 
@@ -427,7 +452,7 @@ When working with Fastify and pino-nestjs together, you need to understand how l
 
 3. **Potential Solutions**:
    - For consistency, you must provide identical configurations to both Fastify and LoggerModule
-   - Better approach: configure only through LoggerModule and drop the `useExisting` option entirely
+   - A better approach is to configure only through LoggerModule and drop the `useExisting` option entirely
 
 4. **When to use `useExisting: true`**:
    - Only when you don't need logging for lifecycle events and application-level logging
@@ -437,7 +462,7 @@ For all other scenarios, using `useExisting: true` will lead to either code dupl
 
 ### Assigning extra fields for future calls
 
-You can enrich logs using the `assign` method of `PinoLogger`:
+You can enrich your logs using the `assign` method of `PinoLogger`:
 
 ```ts
 // my.controller.ts
@@ -474,7 +499,7 @@ Set the `assignResponse` parameter to `true` to also enrich request completion l
 
 ### Changing Pino parameters at runtime
 
-You can modify pino root logger parameters at runtime:
+You can modify the pino root logger parameters at runtime:
 
 ```ts
 // my.controller.ts
@@ -490,7 +515,7 @@ class MyController {
 
 ### Exposing stack trace and error class in `err` property
 
-Use the provided interceptor to expose actual error details:
+Use the provided interceptor to expose detailed error information:
 
 ```typescript
 import { LoggerErrorInterceptor } from 'pino-nestjs';
