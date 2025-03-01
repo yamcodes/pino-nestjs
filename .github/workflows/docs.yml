@@ -27,13 +27,16 @@ jobs:
       - name: Create cover page
         run: |
           cat > docs/_coverpage.md << 'EOL'
-          # 🌲🐱 Pino NestJS
+          # 🌲🐱 pino-nestjs
 
-          > Pino logger integration for NestJS applications
+          > Drop-in Pino logger for NestJS with request context in every log
 
-          - Simple and lightweight
-          - High-performance logging
-          - Easy integration with NestJS
+          - JSON logs, structured logging, high performance (via [pino](https://getpino.io/))
+          - [Automatic request/response logging](https://github.com/pinojs/pino-http) (via [pino-http](https://github.com/pinojs/pino-http))
+          - [Follows NestJS best practices out of the box](https://docs.nestjs.com/techniques/logger#logger) (via [docs.nestjs.com](https://docs.nestjs.com/techniques/logger#logger))
+          - [Respects NestJS parameter order](https://docs.nestjs.com/techniques/logger#logger)
+          - [Zero config](https://docs.nestjs.com/techniques/logger#logger) quickstart cost but still [highly configurable](https://docs.nestjs.com/techniques/logger#logger) when needed
+          - [Classic Pino mode](https://docs.nestjs.com/techniques/logger#logger) for users who prefer Pino's native logging format
 
           [GitHub](https://github.com/yamcodes/pino-nestjs)
           [Get Started](#main)
@@ -48,7 +51,7 @@ jobs:
              <meta http-equiv="X-UA-Compatible" content="IE=edge">
              <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
              <meta name="description" content="Pino logger integration for NestJS applications">
-             <title>Pino NestJS</title>
+             <title>pino-nestjs</title>
 
              <!-- Theme: Simple Dark -->
              <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
