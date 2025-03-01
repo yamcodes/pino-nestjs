@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --verbose -i --detectOpenHandles --forceExit",
-    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "build:root": "rimraf dist && tsc -p tsconfig.build.json",
+    "build": "turbo build:root",
     "release": "pnpm run build && changeset publish",
     "prepack": "pnpm run build",
     "fix": "biome check --write .",

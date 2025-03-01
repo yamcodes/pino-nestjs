@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "build": {
+    "build:root": {
       "outputs": ["dist/**"]
     },
     "typecheck": {
