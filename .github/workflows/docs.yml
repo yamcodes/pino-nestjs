@@ -28,11 +28,11 @@ jobs:
         uses: actions/configure-pages@v4
       - uses: tool3/docsify-action@master
         with:
-          github_token: ${{ secrets.GP_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vitepress/dist
+          path: docs
 
   # Deployment job
   deploy:
