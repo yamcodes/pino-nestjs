@@ -8,7 +8,6 @@
   <a href="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml?query=branch%3Amain+event%3Apush"><img alt="Tests Status" src="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml/badge.svg?event=push&branch=main"></a>
   <a href="https://getpino.io/"><img alt="Powered By pino" src="https://badgen.net/static/powered%20by/pino?color=859947"></a>
   <a href="https://github.com/pinojs/pino-http"><img alt="Powered By pino-http" src="https://badgen.net/static/powered%20by/pino-http?color=859947"></a>
-  <a href="https://coderabbit.com/"><img alt="CodeRabbit Pull Request Reviews" src="https://img.shields.io/coderabbit/prs/github/yamcodes/pino-nestjs?color=859947"></a>
 </p>
 
 Keep your NestJS logs while gaining all the benefits of [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http): structured JSON logs, exceptional performance, and automatic request context tracking.
@@ -32,13 +31,13 @@ this.logger.log('message', context); // ✅ message first, context second
   - [Synchronous configuration](#synchronous-configuration)
   - [Asynchronous configuration](#asynchronous-configuration)
   - [Asynchronous logging](#asynchronous-logging)
-- [Testing](#testing-a-class-that-uses-injectpinologger)
-- [Extending logger classes](#logger-and-pinologger-class-extension)
-- [Notes on logger injection](#notes-on-logger-injection-in-constructor)
-- [Additional features](#assign-extra-fields-for-future-calls)
-  - [Assign extra fields](#assign-extra-fields-for-future-calls)
-  - [Change Pino parameters at runtime](#change-pino-params-at-runtime)
-  - [Expose stack trace](#expose-stack-trace-and-error-class-in-err-property)
+- [Testing a class that uses `@InjectPinoLogger`](#testing-a-class-that-uses-injectpinologger)
+- [Extending `Logger` and `PinoLogger`](#extending-logger-and-pinologger)
+- [Reusing the Fastify logger configuration (advanced)](#reusing-the-fastify-logger-configuration-advanced)
+- [Additional features](#additional-features)
+  - [Assigning extra fields](#assigning-extra-fields-for-future-calls)
+  - [Changing Pino parameters at runtime](#changing-pino-parameters-at-runtime)
+  - [Exposing stack trace](#exposing-stack-trace-and-error-class-in-err-property)
 - [Frequently asked questions](#frequently-asked-questions)
 
 ## Installation
