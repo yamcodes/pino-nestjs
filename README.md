@@ -21,8 +21,6 @@ this.logger.log(context, 'message'); // ❌ context first, message second
 this.logger.log('message', context); // ✅ message first, context second
 ```
 
-`pino-nestjs` is a **true drop-in replacement for NestJS's built-in logger**.
-
 ## Table of contents
 
 - [Installation](#installation)
@@ -182,14 +180,14 @@ this.logger.log({ foo: 'bar' }, 'Hello World');
 this.logger.log('Hello World', { foo: 'bar' });
 ```
 
-Unlike nestjs-pino which follows Pino's convention (context first, then message), `pino-nestjs` acts as a true drop-in replacement for NestJS's built-in Logger by using the NestJS parameter order (message first, then context).
+Unlike nestjs-pino which follows Pino's convention (context first, then message), `pino-nestjs` acts as a drop-in replacement for NestJS's built-in Logger by using the NestJS parameter order (message first, then context).
 
-| Logger | Nest App Logger | Logger Service | Auto-bind Request Data | NestJS Parameter Order |
-|--------|:--------------:|:--------------:|:----------------------:|:----------------------:|
-| [nest-winston](https://github.com/gremo/nest-winston) | ✅ | ✅ | ❌ | ✅ |
-| [nestjs-pino-logger](https://github.com/jtmthf/nestjs-pino-logger) | ✅ | ✅ | ❌ | ✅ |
-| [nestjs-pino](https://github.com/iamolegga/nestjs-pino) | ✅ | ✅ | ✅ | ❌ |
-| [**pino-nestjs**](https://github.com/yamcodes/pino-nestjs) | ✅ | ✅ | ✅ | ✅ |
+| Logger | Nest App Logger | Logger Service | Auto-bind Request Data | NestJS Parameter Order | Active Maintenance |
+|--------|:--------------:|:--------------:|:----------------------:|:----------------------:|:----------------------:|
+| [nest-winston](https://github.com/gremo/nest-winston) | ✅ | ✅ | ❌ | ✅ | ✅ |
+| [nestjs-pino-logger](https://github.com/jtmthf/nestjs-pino-logger) | ✅ | ✅ | ❌ | ❓ | ❌ |
+| [nestjs-pino](https://github.com/iamolegga/nestjs-pino) | ✅ | ✅ | ✅ | ❌ | ✅ |
+| [**pino-nestjs**](https://github.com/yamcodes/pino-nestjs) (you're here!) | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ## Configuration
 
@@ -315,7 +313,7 @@ class TestModule {}
 
 > Asynchronous logging enables even faster performance by pino but risks losing the most recently buffered logs in case of system failure.
 
-Read [pino asynchronous mode docs](https://github.com/pinojs/pino/blob/master/docs/asynchronous.md) first.
+Read the [pino asynchronous mode docs](https://github.com/pinojs/pino/blob/master/docs/asynchronous.md) first.
 
 ```ts
 import pino from 'pino';
@@ -340,7 +338,7 @@ class MyModule {}
 
 See [pino.destination](https://github.com/pinojs/pino/blob/master/docs/api.md#pino-destination)
 
-## Testing a class that uses @InjectPinoLogger
+## Testing a class that uses `@InjectPinoLogger`
 
 The package exposes a `getLoggerToken()` function that returns an injection token based on the provided context:
 
@@ -356,7 +354,7 @@ const module: TestingModule = await Test.createTestingModule({
 }).compile();
 ```
 
-## Logger and PinoLogger class extension
+## Extending `Logger` and `PinoLogger`
 
 Both classes can be extended:
 
@@ -399,13 +397,7 @@ class LoggerService extends PinoLogger {
 class LoggerModule {}
 ```
 
-## Notes on logger injection in constructor
-
-Since NestJS@8, the main purpose of the `Logger` class is to be registered via `app.useLogger(app.get(Logger))`. With this usage, NestJS passes the logger's context as the last optional argument in logging functions.
-
-This creates a limitation in detecting whether a method was called by app internals (where the last argument is context) or by an injected `Logger` instance in a service (where the last argument might be an interpolation value).
-
-## Reuse the Fastify logger configuration
+## Reusing the Fastify logger configuration (advanced)
 
 > [!WARNING]
 > This feature is not recommended for most cases. Read on to understand the caveats.
@@ -446,7 +438,7 @@ When working with Fastify and pino-nestjs together, you need to understand how l
 
 For all other scenarios, using `useExisting: true` will lead to either code duplication or unexpected behavior.
 
-## Assign extra fields for future calls
+## Assigning extra fields for future calls
 
 You can enrich logs using the `assign` method of `PinoLogger`:
 
@@ -479,7 +471,7 @@ class MyService {
 
 Set the `assignResponse` parameter to `true` to also enrich request completion logs.
 
-## Change Pino parameters at runtime
+## Changing Pino parameters at runtime
 
 You can modify pino root logger parameters at runtime:
 
@@ -494,7 +486,7 @@ class TestController {
 }
 ```
 
-## Expose stack trace and error class in `err` property
+## Exposing stack trace and error class in `err` property
 
 Use the provided interceptor to expose actual error details:
 
