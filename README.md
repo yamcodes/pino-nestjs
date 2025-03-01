@@ -29,7 +29,7 @@ this.logger.log('message', context); // ✅ message first, context second
   - [3. Use app logger in `main.ts`](#3-use-app-logger-in-maints)
   - [4. Use `Logger` in your NestJS codebase](#4-use-logger-in-your-nestjs-codebase)
   - [5. Observe the logs](#5-observe-the-logs)
-- [Highlights](#highlights)
+- [Key features](#key-features)
 - [Comparison with other NestJS loggers](#comparison-with-other-nestjs-loggers)
 - [Respecting NestJS parameter order](#respecting-nestjs-parameter-order)
 - [Advanced](#advanced)
@@ -164,7 +164,7 @@ Your logs will now be 🌲 Pino logs with request `context` and `req.id`:
 {"level":30,"time":1629823792029,"pid":15067,"hostname":"my-host","req":{"id":1,"method":"GET","url":"/","query":{},"params":{"0":""},"headers":{"host":"localhost:3000","user-agent":"curl/7.64.1","accept":"*/*"},"remoteAddress":"::1","remotePort":63822},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"12","etag":"W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\""}},"responseTime":7,"msg":"request completed"}
 ```
 
-## Highlights
+## Key features
 
 * **JSON logs, structured logging, high performance** (via [pino](https://getpino.io/))
 * [**Automatic request/response logging**](#5-observe-the-logs) (via [pino-http](https://github.com/pinojs/pino-http))

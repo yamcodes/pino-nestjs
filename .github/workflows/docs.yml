@@ -31,12 +31,12 @@ jobs:
 
           > Drop-in Pino logger for NestJS with request context in every log
 
-          - JSON logs, structured logging, high performance (via [pino](https://getpino.io/))
-          - [Automatic request/response logging](https://github.com/pinojs/pino-http) (via [pino-http](https://github.com/pinojs/pino-http))
-          - [Follows NestJS best practices out of the box](https://docs.nestjs.com/techniques/logger#logger) (via [docs.nestjs.com](https://docs.nestjs.com/techniques/logger#logger))
-          - [Respects NestJS parameter order](https://docs.nestjs.com/techniques/logger#logger)
-          - [Zero config](https://docs.nestjs.com/techniques/logger#logger) quickstart cost but still [highly configurable](https://docs.nestjs.com/techniques/logger#logger) when needed
-          - [Classic Pino mode](https://docs.nestjs.com/techniques/logger#logger) for users who prefer Pino's native logging format
+          - **JSON logs, structured logging, high performance** (via [pino](https://getpino.io/))
+          - **[Automatic request/response logging](https://github.com/pinojs/pino-http)** (via [pino-http](https://github.com/pinojs/pino-http))
+          - **[Follows NestJS best practices out of the box](https://docs.nestjs.com/techniques/logger#logger)**
+          - **[Respects NestJS parameter order](https://docs.nestjs.com/techniques/logger#logger)**
+          - **[Zero config](https://docs.nestjs.com/techniques/logger#logger)** quickstart cost but still [highly configurable](https://docs.nestjs.com/techniques/logger#logger) when needed
+          - [Classic Pino mode](https://docs.nestjs.com/techniques/logger#logger) for users who prefer **Pino's native logging format**
 
           [GitHub](https://github.com/yamcodes/pino-nestjs)
           [Get Started](#main)
