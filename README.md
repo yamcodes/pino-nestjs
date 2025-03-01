@@ -1,13 +1,17 @@
 <h1 align="center">
-  🌲🐱<br /><code>pino-nestjs</code>
+  🌲🐱<br />pino-nestjs
 </h1>
 <p align="center">
+  <a href="https://pino-nest.js.org">pino-nest.js.org</a> <br/>
   Drop-in Pino logger for NestJS with request context in every log
 </p>
 <p align="center">
   <a href="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml?query=branch%3Amain+event%3Apush"><img alt="Tests Status" src="https://github.com/yamcodes/pino-nestjs/actions/workflows/tests.yml/badge.svg?event=push&branch=main"></a>
   <a href="https://getpino.io/"><img alt="Powered By pino" src="https://badgen.net/static/powered%20by/pino?color=859947"></a>
   <a href="https://github.com/pinojs/pino-http"><img alt="Powered By pino-http" src="https://badgen.net/static/powered%20by/pino-http?color=859947"></a>
+  <a href="https://github.com/nestjs/nest"><img alt="Supports NestJS 9" src="https://badgen.net/static/supports/nestjs@9?color=E0234E"></a>
+  <a href="https://github.com/nestjs/nest"><img alt="Supports NestJS 10" src="https://badgen.net/static/supports/nestjs@10?color=E0234E"></a>
+  <a href="https://github.com/nestjs/nest"><img alt="Supports NestJS 11" src="https://badgen.net/static/supports/nestjs@11?color=E0234E"></a>
 </p>
 
 Keep your NestJS logs while gaining all the benefits of [pino](https://getpino.io/) and [pino-http](https://github.com/pinojs/pino-http): structured JSON logs, exceptional performance, and automatic request context tracking.
