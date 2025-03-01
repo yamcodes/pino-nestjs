@@ -6,12 +6,6 @@ on:
       - README.md
   workflow_dispatch: # Temporary
 
-# Set permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
@@ -34,25 +28,44 @@ jobs:
         run: |
           cat > docs/index.html << 'EOL'
           <!DOCTYPE html>
-          <html>
+          <html lang="en">
           <head>
-            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-            <meta name="viewport" content="width=device-width,initial-scale=1">
-            <meta charset="UTF-8">
-            <title>Pino NestJS</title>
-            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css">
+             <meta charset="utf-8">
+             <meta http-equiv="X-UA-Compatible" content="IE=edge">
+             <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+             <meta name="description" content="Pino logger integration for NestJS applications">
+             <title>Pino NestJS</title>
+
+             <!-- Theme: Simple Dark -->
+             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+
+             <!-- Custom Styles -->
+             <style>
+               :root {
+                 /* Custom theme styling can be added here */
+               }
+             </style>
           </head>
           <body>
-            <div id="app"></div>
-            <script>
-              window.$docsify = {
-                name: 'Pino NestJS',
-                repo: 'https://github.com/yamcodes/pino-nestjs',
-                coverpage: false,
-                loadSidebar: false
-              }
-            </script>
-            <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+             <div id="app"></div>
+
+             <script>
+               // Docsify Configuration
+               window.$docsify = {
+                 name: 'Pino NestJS',
+                 repo: 'https://github.com/yamcodes/pino-nestjs',
+                 coverpage: false,
+                 loadSidebar: false
+               };
+             </script>
+
+             <!-- Required -->
+             <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+             <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
+
+             <!-- Recommended -->
+             <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
+             <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
           </body>
           </html>
           EOL
@@ -81,5 +94,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
-
+        uses: actions/deploy-pages@v4
