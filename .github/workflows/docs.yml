@@ -24,6 +24,8 @@ jobs:
         run: mkdir -p docs
       - name: Copy README to docs
         run: cp README.md docs/
+      - name: Copy static assets to docs
+        run: cp -r static/* docs/
       - name: Create cover page
         run: |
           cat > docs/_coverpage.md << 'EOL'
@@ -52,6 +54,10 @@ jobs:
              <meta http-equiv="X-UA-Compatible" content="IE=edge">
              <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
              <meta name="description" content="Pino logger integration for NestJS applications">
+             <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+             <link rel="shortcut icon" href="/favicon.ico" />
+             <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+             <link rel="manifest" href="/site.webmanifest" />
              <title>pino-nestjs</title>
 
              <!-- Theme: Simple Dark -->
