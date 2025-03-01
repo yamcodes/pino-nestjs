@@ -27,16 +27,17 @@ jobs:
       - name: Create cover page
         run: |
           cat > docs/_coverpage.md << 'EOL'
-          # 🌲🐱 pino-nestjs
+          # 🌲🐱 
+          # pino-nestjs
 
           > Drop-in Pino logger for NestJS with request context in every log
 
           - **JSON logs, structured logging, high performance** (via [pino](https://getpino.io/))
-          - **[Automatic request/response logging](https://github.com/pinojs/pino-http)** (via [pino-http](https://github.com/pinojs/pino-http))
+          - **[Automatic request/response logging](#5-observe-the-logs)** (via [pino-http](https://github.com/pinojs/pino-http))
           - **[Follows NestJS best practices out of the box](https://docs.nestjs.com/techniques/logger#logger)**
-          - **[Respects NestJS parameter order](https://docs.nestjs.com/techniques/logger#logger)**
-          - **[Zero config](https://docs.nestjs.com/techniques/logger#logger)** quickstart cost but still [highly configurable](https://docs.nestjs.com/techniques/logger#logger) when needed
-          - [Classic Pino mode](https://docs.nestjs.com/techniques/logger#logger) for users who prefer **Pino's native logging format**
+          - **[Respects NestJS parameter order](#respecting-nestjs-parameter-order)**
+          - **[Zero config](#2-import-loggermodule-in-your-appmodule)** quickstart cost but still [highly configurable](#configuration) when needed
+          - [Classic Pino mode](#using-pinologger-directly) for users who prefer **Pino's native logging format**
 
           [GitHub](https://github.com/yamcodes/pino-nestjs)
           [Get Started](#main)
