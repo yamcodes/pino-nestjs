@@ -168,10 +168,10 @@ Your logs will now be 🌲 Pino logs with request `context` and `req.id`:
 
 * **JSON logs, structured logging, high performance** (via [pino](https://getpino.io/))
 * [**Automatic request/response logging**](#5-observe-the-logs) (via [pino-http](https://github.com/pinojs/pino-http))
-* [**Follows NestJS best practices out of the box**](https://docs.nestjs.com/techniques/logger#logger)
+* **Follows [NestJS best practices](https://docs.nestjs.com/techniques/logger#logger) out of the box**
 * [**Respects NestJS parameter order**](#respecting-nestjs-parameter-order)
 * [**Zero config**](#2-import-loggermodule-in-your-appmodule) quickstart cost but still [highly configurable](#configuration) when needed
-* [**Classic Pino mode**](#using-pinologger-directly) for users who prefer Pino's native logging format
+* [Classic Pino mode](#using-pinologger-directly) for users who prefer **Pino's native logging format**
 
 ## Comparison with other NestJS loggers
 
