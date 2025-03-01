@@ -1,5 +1,5 @@
 ---
-"basic": patch
+"pino-nestjs": patch
 ---
 
 Fix parameter order
