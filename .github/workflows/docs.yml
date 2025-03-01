@@ -41,13 +41,13 @@ jobs:
       - name: Install docsify
         run: npm install -g docsify-cli
       - name: Build docs
-        run: docsify build docs
+        run: docsify init ./docs
       - name: Upload docs
         uses: actions/upload-artifact@v4
         with:
           name: docs
           path: docs
-          
+
   # Deployment job
   deploy:
     environment:
